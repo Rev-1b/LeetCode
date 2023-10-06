@@ -1,11 +1,20 @@
 class Solution:
-    def isPalindrome(self, string: str) -> bool:
-        string = "".join(c for c in string.lower() if c.isalnum())
-        return string == string[::-1]
+    def isSubsequence(self, s: str, t: str) -> bool:
+        if not s:
+            return True
+        i, j = 0, 0
+        while i < len(t):
+            if t[i] == s[j]:
+                j += 1
+                if j == len(s):
+                    return True
+            i += 1
+        return False
 
 
-s = "A man, a plan, a canal: Panama"
+s = "abc"
+t = "ahbgdc"
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isPalindrome(s))
+    print(task.isSubsequence(s, t))

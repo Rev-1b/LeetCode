@@ -1,45 +1,27 @@
-def sanya_task():
-    tmp = input('Введите последовательность целых чисел через пробел: ').split()
-    if ',' in tmp:
-        return 'Введите ЦЕЛЫЕ числа ЧЕРЕЗ ПРОБЕЛ'
-    seq = list(map(int, input().split()))
-    if len(tmp) < 2:
-        return "Последовательность должна состоять как минимуи из 2х элементов"
+class Solution:
+    def trap(self, height: list[int]) -> int:
+        i, j = 0, len(height) - 1
+        water = 0
+        max_left, max_right = 0, 0
+        while i < j:
+            if height[i] < height[j]:
+                if height[i] >= max_left:
+                    max_left = height[i]
+                else:
+                    water += (max_left - height[i])
+                i += 1
+            else:
+                if height[j] >= max_right:
+                    max_right = height[j]
+                else:
+                    water += (max_right - height[j])
+                j -= 1
 
-    longest_seq, l_seq_coords = 0, []  # Определение переменных
-    curr_seq, c_seq_coords = 0, []
-    status = None
+        return water
 
-    for i in range(1, len(seq)):
-        if seq[i] <= seq[i - 1]:  # Случай отрицательного роста
-            if status != 'dcr':  # Случай, когда последовательность только стала отрицательной
-                status = 'dcr'
-                curr_seq = 2
-                c_seq_coords = [i - 1, i]
-            else:                 # Последовательность уже была отрицательной
-                curr_seq += 1
-                c_seq_coords[1] = i
 
-        elif seq[i] > seq[i - 1]:  # Случай положительного роста
-            if status != 'inc':  # Случай, когда последовательность только стала положительной
-                status = 'inc'
-                curr_seq = 2
-                c_seq_coords = [i - 1, i]
-            else:                 # Последовательность уже была положительной
-                curr_seq += 1
-                c_seq_coords[1] = i
-
-        if curr_seq > longest_seq:
-            longest_seq = curr_seq
-            l_seq_coords = c_seq_coords
-
-    ans = (f'Самая длинная монотонно изменяющаяся последовательность представляет собой срез: {l_seq_coords}\n'
-           f'В представленной последовательности ее можно выделить, как: {", ".join(map(str, seq[:l_seq_coords[0]]))}'
-           f' || {", ".join(map(str, seq[l_seq_coords[0]:l_seq_coords[1] + 1]))} || '
-           f'{", ".join(map(str, seq[l_seq_coords[1] + 1:]))}')
-
-    return ans
-
+height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
 
 if __name__ == '__main__':
-    print(sanya_task())
+    task = Solution()
+    print(task.trap(height))

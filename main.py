@@ -1,31 +1,11 @@
-def ktane_pass_task():
-    passwords = (
-        'аллея', 'бомба', 'вверх', 'взрыв', 'внизу',
-        'вьюга', 'горох', 'готов', 'густо', 'давай',
-        'давно', 'книга', 'конец', 'лилия', 'линия',
-        'можно', 'назад', 'нравы', 'песец', 'песня',
-        'порох', 'порыв', 'потом', 'право', 'пусто',
-        'румба', 'скоро', 'супер', 'травы', 'тумба',
-        'тунец', 'фугас', 'шприц', 'щипок', 'щипцы',
-    )
+class Solution:
+    def isPalindrome(self, string: str) -> bool:
+        string = "".join(c for c in string.lower() if c.isalnum())
+        return string == string[::-1]
 
-    letter_set = {
-        0: {'а', 'г', 'л', 'п', 'т', 'б', 'м', 'в', 'д', 'н', 'ф', 'к', 'р', 'ш', 'щ', 'с'},
-        1: {'р', 'н', 'ь', 'у', 'е', 'а', 'п', 'л', 'в', 'к', 'о', 'з', 'и'},
-        2: {'т', 'ю', 'з', 'о', 'г', 'е', 'в', 'а', 'м', 'н', 'л', 'с', 'ж', 'п', 'р', 'и'},
-        3: {'ы', 'в', 'е', 'а', 'н', 'г', 'о', 'и', 'б', 'т', 'з', 'ц', 'р'},
-        4: {'ц', 'й', 'я', 'в', 'р', 'д', 'с', 'ы', 'х', 'м', 'у', 'к', 'о', 'а'}
-    }
 
-    first_pos = letter_set[0] & set(input('Введите все варианты 1-ой буквы: ').split())
-    temp_set = [word for word in passwords if word[0] in first_pos]
-    for i in range(1, 5):
-        print(temp_set)
-        tmp_pos = letter_set[i] & set(input(f'Введите все варианты {i + 1}-ой буквы: ').split())
-        temp_set = [word for word in temp_set if word[i] in tmp_pos]
-        if len(temp_set) == 1:
-            return f'\nКлючевым словом является: |-- {temp_set[0].upper()} --|'
-
+s = "A man, a plan, a canal: Panama"
 
 if __name__ == '__main__':
-    print(ktane_pass_task())
+    task = Solution()
+    print(task.isPalindrome(s))

@@ -1,27 +1,31 @@
-class Solution:
-    def trap(self, height: list[int]) -> int:
-        i, j = 0, len(height) - 1
-        water = 0
-        max_left, max_right = 0, 0
-        while i < j:
-            if height[i] < height[j]:
-                if height[i] >= max_left:
-                    max_left = height[i]
-                else:
-                    water += (max_left - height[i])
-                i += 1
-            else:
-                if height[j] >= max_right:
-                    max_right = height[j]
-                else:
-                    water += (max_right - height[j])
-                j -= 1
+def ktane_pass_task():
+    passwords = (
+        'аллея', 'бомба', 'вверх', 'взрыв', 'внизу',
+        'вьюга', 'горох', 'готов', 'густо', 'давай',
+        'давно', 'книга', 'конец', 'лилия', 'линия',
+        'можно', 'назад', 'нравы', 'песец', 'песня',
+        'порох', 'порыв', 'потом', 'право', 'пусто',
+        'румба', 'скоро', 'супер', 'травы', 'тумба',
+        'тунец', 'фугас', 'шприц', 'щипок', 'щипцы',
+    )
 
-        return water
+    letter_set = {
+        0: {'а', 'г', 'л', 'п', 'т', 'б', 'м', 'в', 'д', 'н', 'ф', 'к', 'р', 'ш', 'щ', 'с'},
+        1: {'р', 'н', 'ь', 'у', 'е', 'а', 'п', 'л', 'в', 'к', 'о', 'з', 'и'},
+        2: {'т', 'ю', 'з', 'о', 'г', 'е', 'в', 'а', 'м', 'н', 'л', 'с', 'ж', 'п', 'р', 'и'},
+        3: {'ы', 'в', 'е', 'а', 'н', 'г', 'о', 'и', 'б', 'т', 'з', 'ц', 'р'},
+        4: {'ц', 'й', 'я', 'в', 'р', 'д', 'с', 'ы', 'х', 'м', 'у', 'к', 'о', 'а'}
+    }
 
+    first_pos = letter_set[0] & set(input('Введите все варианты 1-ой буквы: ').split())
+    temp_set = [word for word in passwords if word[0] in first_pos]
+    for i in range(1, 5):
+        print(temp_set)
+        tmp_pos = letter_set[i] & set(input(f'Введите все варианты {i + 1}-ой буквы: ').split())
+        temp_set = [word for word in temp_set if word[i] in tmp_pos]
+        if len(temp_set) == 1:
+            return f'\nКлючевым словом является: |-- {temp_set[0].upper()} --|'
 
-height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
 
 if __name__ == '__main__':
-    task = Solution()
-    print(task.trap(height))
+    print(ktane_pass_task())

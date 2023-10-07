@@ -1,19 +1,23 @@
 class Solution:
-    def twoSum(self, numbers: list[int], target: int) -> list[int]:
-        i, j = 0, len(numbers) - 1
+    def maxArea(self, height: list[int]) -> int:
+        ln = len(height) - 1
+        i, j = 0, ln
+        max_square = min(height[0], height[-1]) * ln
+
         while i < j:
-            temp_sum = numbers[i] + numbers[j]
-            if temp_sum == target:
-                return [i + 1, j + 1]
-            if temp_sum > target:
-                j -= 1
-            else:
+            ln -= 1
+            if height[i] <= height[j]:
                 i += 1
+            else:
+                j -= 1
+            if min(height[i], height[j]) * ln > max_square:
+                max_square = min(height[i], height[j]) * ln
+
+        return max_square
 
 
-numbers = [2, 7, 11, 15]
-target = 9
+height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.twoSum(numbers, target))
+    print(task.maxArea(height))

@@ -1,17 +1,30 @@
 class Solution:
-    def candy(self, ratings: list[int]) -> int:
-        pchely = [1] * len(ratings)
-        for i in range(1, len(ratings)):
-            if ratings[i] > ratings[i - 1]:
-                pchely[i] = pchely[i - 1] + 1
-        for j in range(len(ratings) - 2, -1, -1):
-            if ratings[j] > ratings[j + 1] and pchely[j] <= pchely[j + 1]:
-                pchely[j] = pchely[j + 1] + 1
-        return sum(pchely)
+    def maxArea(self, height: list[int]) -> int:
+        i, j = 0, len(height) - 1
+        prev_max, post_max = height[i], height[j]
+        max_square = min(prev_max, post_max) * j
+
+        while i < j:
+            if prev_max <= post_max:
+                i += 1
+                while height[i] <= prev_max and i < j:
+                    i += 1
+                prev_max = height[i]
+            else:
+                j -= 1
+                while height[j] <= post_max and i < j:
+                    j -= 1
+                post_max = height[j]
+
+            temp_square = min(prev_max, post_max) * (j - i)
+            if temp_square > max_square:
+                max_square = temp_square
+
+        return max_square
 
 
-ratings = [1, 2, 2]
+height = [2, 3, 4, 5, 18, 17, 6]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.candy(ratings))
+    print(task.maxArea(height))

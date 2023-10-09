@@ -1,22 +1,18 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         seen_chars = {}
-        left = 0
-        result = 0
+        left, result = 0, 0
 
         for i in range(len(s)):
-            if s[i] not in seen_chars:
-                result = max(result, i + 1 - left)
-            else:
-                while seen_chars[s[i]] >= left:
-                    left += 1
-                result = max(result, i + 1 - left)
+            if s[i] in seen_chars:
+                if seen_chars[s[i]] >= left:
+                    left = seen_chars[s[i]] + 1
+            result = max(result, i + 1 - left)
             seen_chars[s[i]] = i
-
         return result
 
 
-s = "pwwkew"
+s = " "
 
 if __name__ == '__main__':
     task = Solution()

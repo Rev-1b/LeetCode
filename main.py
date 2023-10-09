@@ -1,30 +1,39 @@
 class Solution:
-    def maxArea(self, height: list[int]) -> int:
-        i, j = 0, len(height) - 1
-        prev_max, post_max = height[i], height[j]
-        max_square = min(prev_max, post_max) * j
+    def threeSum(self, nums: list[int]) -> list[list[int]]:
+        def check_3Sum(collection, alter_coll_set):
+            for i in range(len(collection)):
+                for j in range(i + 1, len(collection)):
+                    target = -1 * (collection[i] + collection[j])
+                    if target in alter_coll_set:
+                        result.add(tuple(sorted([collection[i], collection[j], target])))
 
-        while i < j:
-            if prev_max <= post_max:
-                i += 1
-                while height[i] <= prev_max and i < j:
-                    i += 1
-                prev_max = height[i]
+        result = set()
+        negative, positive, zero = [], [], 0
+        for num in nums:
+            if num > 0:
+                positive.append(num)
+            elif num < 0:
+                negative.append(num)
             else:
-                j -= 1
-                while height[j] <= post_max and i < j:
-                    j -= 1
-                post_max = height[j]
+                zero += 1
 
-            temp_square = min(prev_max, post_max) * (j - i)
-            if temp_square > max_square:
-                max_square = temp_square
+        neg_set, pos_set = set(negative), set(positive)
+        if zero:
+            for num in neg_set:
+                if -1 * num in pos_set:
+                    result.add((-1 * num, 0, num))
 
-        return max_square
+        if zero >= 3:
+            result.add((0, 0, 0))
+
+        check_3Sum(negative, pos_set)
+        check_3Sum(positive, neg_set)
+
+        return result
 
 
-height = [2, 3, 4, 5, 18, 17, 6]
+nums = [-1, 0, 1, 2, -1, -4]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.maxArea(height))
+    print(task.threeSum(nums))

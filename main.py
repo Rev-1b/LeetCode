@@ -1,33 +1,13 @@
-from collections import defaultdict
-
-
 class Solution:
-    def isValidSudoku(self, board: list[list[str]]) -> bool:
-        all_chars = defaultdict(list)
-        for i in range(9):
-            for j in range(9):
-                char = board[i][j]
-                if char.isdigit():
-                    square_pos = (i // 3, j // 3)
-                    for pre_val in all_chars[char]:
-                        if i == pre_val[0][0] or j == pre_val[0][1] or square_pos == pre_val[1]:
-                            return False
-                    all_chars[char].append(((i, j), square_pos))
-        return True
+    def rotate(self, matrix: list[list[int]]) -> None:
+        matrix.reverse()
+        for i in range(len(matrix)):
+            for j in range(i):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 
-board = [
-    ["8", "3", ".", ".", "7", ".", ".", ".", "."],
-    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
-    [".", "9", "8", ".", ".", ".", ".", "6", "."],
-    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
-    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
-    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-    [".", "6", ".", ".", ".", ".", "2", "8", "."],
-    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
-    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
-]
+matrix = [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isValidSudoku(board))
+    print(task.rotate(matrix))

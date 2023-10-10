@@ -1,13 +1,43 @@
 class Solution:
-    def rotate(self, matrix: list[list[int]]) -> None:
-        matrix.reverse()
-        for i in range(len(matrix)):
-            for j in range(i):
-                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:
+        stage = 0
+        direction = 0
+        i, j = 0, 0
+        n, m = len(matrix), len(matrix[0])
+        result = [matrix[0][0]]
+        while True:
+            if len(result) == n * m:
+                return result
+            if not direction:
+                if j + 1 + stage < m:
+                    j += 1
+                else:
+                    direction += 1
+                    continue
+            elif direction == 1:
+                if i + 1 + stage < n:
+                    i += 1
+                else:
+                    direction += 1
+                    continue
+            elif direction == 2:
+                if j - 1 - stage >= 0:
+                    j -= 1
+                else:
+                    direction += 1
+                    continue
+            else:
+                if i - 1 - stage >= 1:
+                    i -= 1
+                else:
+                    direction = 0
+                    stage += 1
+                    continue
+            result.append(matrix[i][j])
 
 
-matrix = [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.rotate(matrix))
+    print(task.spiralOrder(matrix))

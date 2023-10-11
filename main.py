@@ -1,43 +1,23 @@
 class Solution:
-    def spiralOrder(self, matrix: list[list[int]]) -> list[int]:
-        stage = 0
-        direction = 0
-        i, j = 0, 0
+    def setZeroes(self, matrix: list[list[int]]) -> None:
         n, m = len(matrix), len(matrix[0])
-        result = [matrix[0][0]]
-        while True:
-            if len(result) == n * m:
-                return result
-            if not direction:
-                if j + 1 + stage < m:
-                    j += 1
-                else:
-                    direction += 1
-                    continue
-            elif direction == 1:
-                if i + 1 + stage < n:
-                    i += 1
-                else:
-                    direction += 1
-                    continue
-            elif direction == 2:
-                if j - 1 - stage >= 0:
-                    j -= 1
-                else:
-                    direction += 1
-                    continue
-            else:
-                if i - 1 - stage >= 1:
-                    i -= 1
-                else:
-                    direction = 0
-                    stage += 1
-                    continue
-            result.append(matrix[i][j])
+        rows, cols = set(), set()
+        for i in range(n):
+            for j in range(m):
+                if matrix[i][j] == 0:
+                    rows.add(i)
+                    cols.add(j)
+        for k in rows:
+            for l in range(m):
+                matrix[k][l] = 0
+        for q in cols:
+            for w in range(n):
+                matrix[w][q] = 0
 
 
-matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+matrix = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.spiralOrder(matrix))
+    task.setZeroes(matrix)
+    print(matrix)

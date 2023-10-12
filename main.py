@@ -1,19 +1,22 @@
 class Solution:
-    def isIsomorphic(self, s: str, t: str) -> bool:
-        if len(s) != len(t):
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        s_lst = s.split()
+        if len(pattern) != len(s_lst):
             return False
-        s_main, t_main = {}, {}
-        for s_char, t_char in zip(s, t):
-            s_temp = s_main.setdefault(s_char, t_char)
-            t_temp = t_main.setdefault(t_char, s_char)
-            if s_temp != t_char or t_temp != s_char:
+        pattern_map, heap = {}, set()
+        for char, word in zip(pattern, s_lst):
+            if char not in pattern_map and word in heap:
                 return False
+            tmp_res = pattern_map.setdefault(char, word)
+            if tmp_res != word:
+                return False
+            heap.add(word)
         return True
 
 
-s = "aaq"
-t = "ooo"
+pattern = "abba"
+s = "dog dog dog dog"
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isIsomorphic(s, t))
+    print(task.wordPattern(pattern, s))

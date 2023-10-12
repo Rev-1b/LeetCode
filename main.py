@@ -1,16 +1,19 @@
 class Solution:
-    def containsNearbyDuplicate(self, nums: list[int], k: int) -> bool:
-        storage = {}
-        for index, num in enumerate(nums):
-            if num in storage and index - storage[num] <= k:
-                return True
-            storage[num] = index
-        return False
+    def isHappy(self, n: int) -> bool:
+        prev_nums = {n}
+        while n != 1:
+            temp = 0
+            for digit in str(n):
+                temp += int(digit) ** 2
+            if temp in prev_nums:
+                return False
+            prev_nums.add(temp)
+            n = temp
+        return True
 
 
-nums = [1, 2, 3, 1]
-k = 3
+n = 19
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.containsNearbyDuplicate(nums, k))
+    print(task.isHappy(n))

@@ -1,16 +1,31 @@
 class Solution:
-    def twoSum(self, nums: list[int], target: int) -> list[int]:
-        nums_set = {}
+    def longestConsecutive(self, nums: list[int]) -> int:
+        if not nums:
+            return 0
+        hash_map = set(nums)
+        biggest = 1
+        curr = 1
+        temp_elem = hash_map.pop()
 
-        for index, num in enumerate(nums):
-            if target - num in nums_set:
-                return nums_set[target - num], index
-            nums_set[num] = index
+        while hash_map:
+            if temp_elem - 1 in hash_map:
+                hash_map.add(temp_elem)
+                temp_elem = temp_elem - 1
+            elif temp_elem + 1 in hash_map:
+                curr += 1
+                biggest = max(biggest, curr)
+                if temp_elem in hash_map:
+                    hash_map.remove(temp_elem)
+                temp_elem = temp_elem + 1
+            else:
+                temp_elem = hash_map.pop()
+                curr = 1
+        return biggest
 
 
-nums = [3, 2, 4]
-target = 6
+
+nums = [100, 4, 200, 1, 3, 2]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.twoSum(nums, target))
+    print(task.longestConsecutive(nums))

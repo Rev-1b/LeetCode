@@ -1,19 +1,16 @@
-from collections import defaultdict
-
-
 class Solution:
-    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
-        tmp_res = defaultdict(list)
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        nums_set = {}
 
-        for word in strs:
-            count = ''.join(sorted(word))
-            tmp_res[count].append(word)
+        for index, num in enumerate(nums):
+            if target - num in nums_set:
+                return nums_set[target - num], index
+            nums_set[num] = index
 
-        return tmp_res.values()
 
-
-strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+nums = [3, 2, 4]
+target = 6
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.groupAnagrams(strs))
+    print(task.twoSum(nums, target))

@@ -1,14 +1,19 @@
-from collections import Counter
+from collections import defaultdict
 
 
 class Solution:
-    def isAnagram(self, s: str, t: str) -> bool:
-        return Counter(s) == Counter(t)
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        tmp_res = defaultdict(list)
+
+        for word in strs:
+            count = ''.join(sorted(word))
+            tmp_res[count].append(word)
+
+        return tmp_res.values()
 
 
-s = "anagram"
-t = "nagaram"
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isAnagram(s, t))
+    print(task.groupAnagrams(strs))

@@ -1,19 +1,20 @@
 class Solution:
-    def isHappy(self, n: int) -> bool:
-        prev_nums = {n}
-        while n != 1:
-            temp = 0
-            for digit in str(n):
-                temp += int(digit) ** 2
-            if temp in prev_nums:
-                return False
-            prev_nums.add(temp)
-            n = temp
-        return True
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
+        intervals.sort()
+        result = [intervals[0]]
+
+        for i in range(1, len(intervals)):
+            if result[-1][1] <= intervals[i][1]:
+                if intervals[i][0] <= result[-1][1]:
+                    result[-1][1] = intervals[i][1]
+                else:
+                    result.append(intervals[i])
+
+        return result
 
 
-n = 19
+intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isHappy(n))
+    print(task.merge(intervals))

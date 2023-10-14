@@ -1,19 +1,21 @@
 class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
-        if len(nums) <= 2:
-            return len(nums)
+    def rotate(self, nums: List[int], k: int) -> None:
+        L = len(nums)
+        if L == k: return
 
-        currentIndex = 2
-        for i in range(2, len(nums)):
-            if nums[i] != nums[currentIndex - 2]:
-                nums[currentIndex] = nums[i]
-                currentIndex += 1
+        k = k % L  # the case when k > L
+        nums.reverse()
 
-        return currentIndex
+        for i in range(k // 2):
+            nums[i], nums[k - 1 - i] = nums[k - 1 - i], nums[i]
+
+        for i in range(k, (L + k) // 2):
+            nums[i], nums[L - 1 - i + k] = nums[L - 1 - i + k], nums[i]
 
 
-nums = [1, 1, 1, 2, 2, 3]
+nums = [1,2,3,4,5,6,7]
+k = 3
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.removeDuplicates(nums))
+    print(task.rotate(nums, k))

@@ -1,20 +1,19 @@
 class Solution:
-    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
-        intervals.sort()
-        result = [intervals[0]]
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if len(nums) <= 2:
+            return len(nums)
 
-        for i in range(1, len(intervals)):
-            if result[-1][1] <= intervals[i][1]:
-                if intervals[i][0] <= result[-1][1]:
-                    result[-1][1] = intervals[i][1]
-                else:
-                    result.append(intervals[i])
+        currentIndex = 2
+        for i in range(2, len(nums)):
+            if nums[i] != nums[currentIndex - 2]:
+                nums[currentIndex] = nums[i]
+                currentIndex += 1
 
-        return result
+        return currentIndex
 
 
-intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+nums = [1, 1, 1, 2, 2, 3]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.merge(intervals))
+    print(task.removeDuplicates(nums))

@@ -1,29 +1,27 @@
-class MinStack:
+class Solution:
+    def evalRPN(self, tokens: list[str]) -> int:
+        stack = []
+        operators = {
+            '+': lambda x, y: x + y,
+            '-': lambda x, y: x - y,
+            '/': lambda x, y: int(x / y),
+            '*': lambda x, y: x * y,
+        }
 
-    def __init__(self):
-        self.stack = []
-        self.minStack = []
-
-    def push(self, val: int) -> None:
-        self.stack.append(val)
-        if self.minStack:
-            val = min(self.minStack[-1], val)
-        self.minStack.append(val)
-
-    def pop(self) -> None:
-        self.stack.pop()
-        self.minStack.pop()
-
-    def top(self) -> int:
-        return self.stack[-1]
-
-    def getMin(self) -> int:
-        return self.minStack[-1]
+        for elem in tokens:
+            if elem in operators:
+                y = stack.pop()
+                x = stack.pop()
+                func = operators[elem]
+                stack.append(func(x, y))
+            else:
+                stack.append(int(elem))
+        return stack[0]
 
 
-path = "/../"
+tokens = ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
 
-# if __name__ == '__main__':
-#     task = Solution()
-#     print(task.simplifyPath(path))
 
+if __name__ == '__main__':
+    task = Solution()
+    print(task.evalRPN(tokens))

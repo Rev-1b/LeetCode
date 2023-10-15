@@ -1,21 +1,24 @@
 class Solution:
-    def rotate(self, nums: List[int], k: int) -> None:
-        L = len(nums)
-        if L == k: return
+    def insert(self, intervals: list[list[int]], newInterval: list[int]) -> list[list[int]]:
+        result = []
+        START, END = 0, 1
 
-        k = k % L  # the case when k > L
-        nums.reverse()
+        for elem in intervals:
+            if elem[END] < newInterval[START]:
+                result.append(elem)
+            elif elem[START] > newInterval[END]:
+                result.append(newInterval)
+                newInterval = elem
+            elif elem[START] <= newInterval[START] or elem[END] >= newInterval[END]:
+                newInterval = [min(elem[START], newInterval[START]),
+                               max(elem[END], newInterval[END])]
+            result.append(newInterval)
+            return result
 
-        for i in range(k // 2):
-            nums[i], nums[k - 1 - i] = nums[k - 1 - i], nums[i]
 
-        for i in range(k, (L + k) // 2):
-            nums[i], nums[L - 1 - i + k] = nums[L - 1 - i + k], nums[i]
-
-
-nums = [1,2,3,4,5,6,7]
-k = 3
+intervals = [[1,3],[6,9]]
+newInterval = [2,5]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.rotate(nums, k))
+    print(task.insert(intervals, newInterval))

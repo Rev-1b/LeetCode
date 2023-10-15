@@ -1,30 +1,29 @@
-class Solution:
-    def simplifyPath(self, path: str) -> str:
-        stack = []
+class MinStack:
 
-        temp_storage = []
-        temp = ''
-        for char in path:
-            if char == '/':
-                if temp:
-                    temp_storage.append(temp)
-                    temp = ''
-            else:
-                temp += char
-        if temp:
-            temp_storage.append(temp)
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
 
-        for elem in temp_storage:
-            if elem == '..':
-                stack = stack[:-1]
-            elif elem != '.':
-                stack.append(elem)
-        return f'/{"/".join(stack)}'
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if self.minStack:
+            val = min(self.minStack[-1], val)
+        self.minStack.append(val)
+
+    def pop(self) -> None:
+        self.stack.pop()
+        self.minStack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.minStack[-1]
 
 
 path = "/../"
 
-if __name__ == '__main__':
-    task = Solution()
-    print(task.simplifyPath(path))
+# if __name__ == '__main__':
+#     task = Solution()
+#     print(task.simplifyPath(path))
 

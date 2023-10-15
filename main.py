@@ -1,18 +1,30 @@
 class Solution:
-    def findMinArrowShots(self, points: list[list[int]]) -> int:
-        points.sort(key=lambda x: x[1])
-        arrows = 1
-        shot = points[0][1]
+    def simplifyPath(self, path: str) -> str:
+        stack = []
 
-        for start, end in points[1:]:
-            if shot < start:
-                shot = end
-                arrows += 1
-        return arrows
+        temp_storage = []
+        temp = ''
+        for char in path:
+            if char == '/':
+                if temp:
+                    temp_storage.append(temp)
+                    temp = ''
+            else:
+                temp += char
+        if temp:
+            temp_storage.append(temp)
+
+        for elem in temp_storage:
+            if elem == '..':
+                stack = stack[:-1]
+            elif elem != '.':
+                stack.append(elem)
+        return f'/{"/".join(stack)}'
 
 
-points = [[10, 16], [2, 8], [1, 6], [7, 12]]
+path = "/../"
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.findMinArrowShots(points))
+    print(task.simplifyPath(path))
+

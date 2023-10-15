@@ -1,22 +1,18 @@
 class Solution:
-    def isValid(self, s: str) -> bool:
-        closed = {')': '(', ']': '[', '}': '{'}
-        stack = ''
+    def findMinArrowShots(self, points: list[list[int]]) -> int:
+        points.sort(key=lambda x: x[1])
+        arrows = 1
+        shot = points[0][1]
 
-        for char in s:
-            if char in closed:
-                if stack and closed[char] == stack[-1]:
-                    stack = stack[:-1]
-                else:
-                    return False
-            else:
-                stack += char
-        return not stack
+        for start, end in points[1:]:
+            if shot < start:
+                shot = end
+                arrows += 1
+        return arrows
 
 
-s = "()[]{}(}"
+points = [[10, 16], [2, 8], [1, 6], [7, 12]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isValid(s))
-
+    print(task.findMinArrowShots(points))

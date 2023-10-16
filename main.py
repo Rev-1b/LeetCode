@@ -1,27 +1,29 @@
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, x, next=None):
+        self.val = x
+        self.next = next
+
+
 class Solution:
-    def evalRPN(self, tokens: list[str]) -> int:
-        stack = []
-        operators = {
-            '+': lambda x, y: x + y,
-            '-': lambda x, y: x - y,
-            '/': lambda x, y: int(x / y),
-            '*': lambda x, y: x * y,
-        }
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow, fast = head, head.next
 
-        for elem in tokens:
-            if elem in operators:
-                y = stack.pop()
-                x = stack.pop()
-                func = operators[elem]
-                stack.append(func(x, y))
-            else:
-                stack.append(int(elem))
-        return stack[0]
-
-
-tokens = ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
+        while fast.next:
+            if slow == fast:
+                return True
+            slow = slow.next
+            fast = fast.next.next
+        return False
 
 
 if __name__ == '__main__':
+    d = ListNode(1)
+    c = ListNode(2, d)
+    b = ListNode(3, c)
+    a = ListNode(4, b)
+
     task = Solution()
-    print(task.evalRPN(tokens))
+    print(task.hasCycle(a))

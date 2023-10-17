@@ -11,40 +11,37 @@ class ListNode:
 
 
 class Solution:
-    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        temporal = ListNode(-1)
-        temporal.next = head
-        prev = temporal
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         curr = head
+        storage = {}
+        i = 1
 
         while curr:
-            while curr.next and curr.next.val == curr.val:
-                curr = curr.next
-            if prev.next == curr:
-                prev = prev.next
-                curr = curr.next
-            else:
-                prev.next = curr.next
-                curr = prev.next
+            storage[i] = curr
+            curr = curr.next
+            i += 1
 
-        return temporal.next
+        list_len = i - 1
+        k = k % list_len
+        if not k:
+            return head
 
-
-
-
+        storage[list_len - k].next = None
+        storage[list_len].next = head
+        return storage[list_len - k + 1]
 
 
 if __name__ == '__main__':
-    n7 = ListNode(5)
-    n6 = ListNode(4, n7)
-    n5 = ListNode(3, n6)
-    n4 = ListNode(3, n5)
-    n3 = ListNode(2, n4)
-    n2 = ListNode(1, n3)
+    n7 = ListNode(7)
+    n6 = ListNode(6, n7)
+    n5 = ListNode(5, n6)
+    n4 = ListNode(4, n5)
+    n3 = ListNode(3, n4)
+    n2 = ListNode(2, n3)
     n1 = ListNode(1, n2)
 
     task = Solution()
-    head1 = task.deleteDuplicates(n1)
+    head1 = task.rotateRight(n1, 12)
     while head1:
         print(head1.val)
         head1 = head1.next

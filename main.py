@@ -11,30 +11,40 @@ class ListNode:
 
 
 class Solution:
-    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        storage = {}
-        i = 1
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        temporal = ListNode(-1)
+        temporal.next = head
+        prev = temporal
         curr = head
+
         while curr:
-            storage[i] = curr
-            curr = curr.next
-            i += 1
-        index = i - n
-        if index == 1:
-            return storage.get(2)
-        storage[index - 1].next = storage.get(index + 1)
-        return head
+            while curr.next and curr.next.val == curr.val:
+                curr = curr.next
+            if prev.next == curr:
+                prev = prev.next
+                curr = curr.next
+            else:
+                prev.next = curr.next
+                curr = prev.next
+
+        return temporal.next
+
+
+
+
 
 
 if __name__ == '__main__':
-    n5 = ListNode(5)
-    n4 = ListNode(4, n5)
-    n3 = ListNode(3, n4)
-    n2 = ListNode(2, n3)
-    n1 = ListNode(1)
+    n7 = ListNode(5)
+    n6 = ListNode(4, n7)
+    n5 = ListNode(3, n6)
+    n4 = ListNode(3, n5)
+    n3 = ListNode(2, n4)
+    n2 = ListNode(1, n3)
+    n1 = ListNode(1, n2)
 
     task = Solution()
-    head1 = task.removeNthFromEnd(n1, 1)
+    head1 = task.deleteDuplicates(n1)
     while head1:
         print(head1.val)
         head1 = head1.next

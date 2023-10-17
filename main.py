@@ -1,39 +1,57 @@
 from typing import Optional
 
 
-class Node:
-    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+class ListNode:
+    def __init__(self, x: int, next: 'ListNode' = None):
         self.val = int(x)
         self.next = next
-        self.random = random
+
+    def __str__(self):
+        return f'Val = {self.val}'
+
+
 
 
 class Solution:
-    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        old_head = head
-        new_head = Node(old_head.val)
-        new_tail = new_head
-        old_to_new = {old_head: new_head}
-        old_head = old_head.next
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        if left == right:
+            return head
 
-        while old_head:
-            obj = Node(old_head.val)
-            old_to_new[old_head] = obj
-            new_tail.next = obj
-            new_tail = obj
-            old_head = old_head.next
+        curr = head
+        tail = None
+        while left > 1:
+            tail = curr
+            curr = curr.next
+            left -= 1
+            right -= 1
 
-        while head:
-            old_to_new.get(head).random = old_to_new.get(head.random)
-            head = head.next
+        first_to_last = curr
+        prev = None
+        while right > 0:
+            next_node = curr.next
+            if prev:
+                curr.next = prev
+            prev = curr
+            curr = next_node
+            right -= 1
 
-        return new_head
+        if tail:
+            tail.next = prev
+        else:
+            head = prev
+        first_to_last.next = curr
+        return head
 
 
 if __name__ == '__main__':
+    n5 = ListNode(5)
+    n4 = ListNode(4, n5)
+    n3 = ListNode(3, n4)
+    n2 = ListNode(2, n3)
+    n1 = ListNode(1, n2)
 
     task = Solution()
-    head1 = task.copyRandomList()
+    head1 = task.reverseBetween(n1, 1, 4)
     while head1:
         print(head1.val)
         head1 = head1.next

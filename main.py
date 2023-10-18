@@ -12,64 +12,20 @@ class ListNode:
 
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
-        l_head, l_tail = None, None
-        gbb_head, gbb_tail = None, None
-        e_head, e_tail = None, None
-        gaa_head, gaa_tail = None, None
-        curr = head
-        result = None
+        before, after = ListNode(0), ListNode(0)
+        before_curr, after_curr = before, after
 
-        while curr:
-            if curr.val < x:
-                if not l_head:
-                    l_head = curr
-                    l_tail = l_head
-                else:
-                    l_tail.next = curr
-                    l_tail = curr
-
-            elif curr.val > x:
-                if e_head:
-                    if not gaa_head:
-                        gaa_head = curr
-                        gaa_tail = gaa_head
-                    else:
-                        gaa_tail.next = curr
-                        gaa_tail = curr
-                else:
-                    if not gbb_head:
-                        gbb_head = curr
-                        gbb_tail = gbb_head
-                    else:
-                        gbb_tail.next = curr
-                        gbb_tail = curr
+        while head:
+            if head.val < x:
+                before_curr.next, before_curr = head, head
             else:
-                if not e_head:
-                    e_head = curr
-                    e_tail = e_head
-                else:
-                    e_tail.next = curr
-                    e_tail = curr
-            curr = curr.next
+                after_curr.next, after_curr = head, head
+            head = head.next
 
-        if l_head:
-            result = l_head
-            if gbb_head:
-                l_tail.next = gbb_head
-                gbb_tail.next = e_head
-            else:
-                l_tail.next = e_head
-        elif gbb_head:
-            result = gbb_head
-            gbb_tail.next = e_head
+        after_curr.next = None
+        before_curr.next = after.next
 
-        if gaa_head:
-            e_tail.next = gaa_head
-            gaa_tail.next = None
-        else:
-            e_tail.next = None
-
-        return result
+        return before.next
 
 
 if __name__ == '__main__':

@@ -10,15 +10,15 @@ class TreeNode:
 
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if p and not q or q and not p:
+            return False
         stack = [(p, q)]
 
         while stack:
             curr_p, curr_q = stack.pop()
             if not curr_p and not curr_q:
                 continue
-            if curr_p and not curr_q or \
-               curr_q and not curr_p or \
-               curr_p.val != curr_q.val or \
+            if curr_p.val != curr_q.val or \
                curr_p.left and not curr_q.left or \
                curr_q.left and not curr_p.left or \
                curr_p.right and not curr_q.right or \

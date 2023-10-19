@@ -14,25 +14,14 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:
-        def do_magic(inorder):
-            nonlocal preorder
-
-            if not preorder:
-                return None
-
-            value = preorder[0]
-            if value not in inorder:
-                return None
-            preorder = preorder[1:]
+        if inorder:
+            value = preorder.pop(0)
             value_pos = inorder.index(value)
             node = TreeNode(value)
+            node.left = self.buildTree(preorder, inorder[:value_pos])
+            node.right = self.buildTree(preorder, inorder[value_pos + 1:])
 
-            if len(inorder) > 1:
-                node.left = do_magic(inorder[:value_pos])
-                node.right = do_magic(inorder[value_pos + 1:])
             return node
-
-        return do_magic(inorder)
 
 
 if __name__ == '__main__':

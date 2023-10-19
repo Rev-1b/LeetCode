@@ -9,26 +9,17 @@ class TreeNode:
 
 
 class Solution:
-    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        if p and not q or q and not p:
-            return False
-        stack = [(p, q)]
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        stack = [root] if root else None
 
         while stack:
-            curr_p, curr_q = stack.pop()
-            if not curr_p and not curr_q:
-                continue
-            if curr_p.val != curr_q.val or \
-               curr_p.left and not curr_q.left or \
-               curr_q.left and not curr_p.left or \
-               curr_p.right and not curr_q.right or \
-               curr_q.right and not curr_p.right:
-                return False
-
-            stack.append((curr_p.left, curr_q.left))
-            stack.append((curr_p.right, curr_q.right))
-
-        return True
+            node = stack.pop()
+            node.left, node.right = node.right, node.left
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        return root
 
 
 if __name__ == '__main__':
@@ -40,4 +31,4 @@ if __name__ == '__main__':
     node1 = TreeNode(9)
     root = TreeNode(3, node1, node2)
 
-    print(task.maxDepth(root))
+    print(task.invertTree(root))

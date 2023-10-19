@@ -1,37 +1,34 @@
 from typing import Optional
-from collections import OrderedDict
 
 
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.data: OrderedDict[int, int] = OrderedDict()
-        self.capacity: int = capacity
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-    def get(self, key: int) -> int:
-        return -1 if key not in self.data else self.data.setdefault(key, self.data.pop(key))
 
-    def put(self, key: int, value: int) -> None:
-        try:
-            self.data.move_to_end(key)
-            self.data[key] = value
-        except KeyError:
-            self.data[key] = value
-            if len(self.data) > self.capacity:
-                self.data.popitem(last=False)
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        stack = [[root, 1]]
+        max_depth = 0
+
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                max_depth = max(depth, max_depth)
+                stack.append([node.left, depth + 1])
+                stack.append([node.right, depth + 1])
+        return max_depth
 
 
 if __name__ == '__main__':
-    cache = LRUCache(2)
+    task = Solution()
 
-    cache.put(1, 1)
-    cache.put(2, 2)
-    p1 = cache.get(1)
-    cache.put(3, 3)
-    p2 = cache.get(2)
-    cache.put(4, 4)
-    p3 = cache.get(1)
-    p4 = cache.get(3)
-    p5 = cache.get(4)
+    node4 = TreeNode(7)
+    node3 = TreeNode(15)
+    node2 = TreeNode(20, node3, node4)
+    node1 = TreeNode(9)
+    root = TreeNode(3, node1, node2)
 
-    print(p1, p2, p3, p4, p5)
-    # 1 -1 -1 3 4
+    print(task.maxDepth(root))

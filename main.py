@@ -9,17 +9,26 @@ class TreeNode:
 
 
 class Solution:
-    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        stack = [root] if root else None
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return False
+        stack = [(root, root)]
 
         while stack:
-            node = stack.pop()
-            node.left, node.right = node.right, node.left
-            if node.left:
-                stack.append(node.left)
-            if node.right:
-                stack.append(node.right)
-        return root
+            curr_p, curr_q = stack.pop()
+            if not curr_p and not curr_q:
+                continue
+            if curr_p.val != curr_q.val or \
+                    curr_p.left and not curr_q.right or \
+                    curr_q.left and not curr_p.right or \
+                    curr_p.right and not curr_q.left or \
+                    curr_q.right and not curr_p.left:
+                return False
+
+            stack.append((curr_p.left, curr_q.right))
+            stack.append((curr_p.right, curr_q.left))
+
+        return True
 
 
 if __name__ == '__main__':

@@ -9,17 +9,26 @@ class TreeNode:
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        stack = [[root, 1]]
-        max_depth = 0
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        stack = [(p, q)]
 
         while stack:
-            node, depth = stack.pop()
-            if node:
-                max_depth = max(depth, max_depth)
-                stack.append([node.left, depth + 1])
-                stack.append([node.right, depth + 1])
-        return max_depth
+            curr_p, curr_q = stack.pop()
+            if not curr_p and not curr_q:
+                continue
+            if curr_p and not curr_q or \
+               curr_q and not curr_p or \
+               curr_p.val != curr_q.val or \
+               curr_p.left and not curr_q.left or \
+               curr_q.left and not curr_p.left or \
+               curr_p.right and not curr_q.right or \
+               curr_q.right and not curr_p.right:
+                return False
+
+            stack.append((curr_p.left, curr_q.left))
+            stack.append((curr_p.right, curr_q.right))
+
+        return True
 
 
 if __name__ == '__main__':

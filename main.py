@@ -2,56 +2,79 @@ from typing import Optional
 from test import print_tree
 
 
-class Node:
-    def __init__(self, val=0, left=None, right=None, next=None):
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
-        self.next = next
 
     def __str__(self):
         return f'value = {self.val}'
 
 
+# class Solution:
+#     def flatten(self, root: Optional[TreeNode]) -> None:
+#         curr = root
+#
+#         while curr:
+#             if curr.left:
+#                 temp = curr.left
+#
+#                 while temp.right:
+#                     temp = temp.right
+#
+#                 temp.right = curr.right
+#                 curr.left, curr.right = None, curr.left
+#             curr = curr.right
+
+
 class Solution:
-    def connect(self, root: 'Node') -> 'Node':
+    def flatten(self, root: Optional[TreeNode]) -> None:
         if not root or not root.left and not root.right:
             return root
+        nodes = []
 
-        storage = [root]
-        while storage:
-            temp_storage = []
-            prev = None
-            for node in storage:
-                if prev:
-                    prev.next = node
-                if node.left:
-                    temp_storage.append(node.left)
-                if node.right:
-                    temp_storage.append(node.right)
-                prev = node
-            storage = temp_storage
+        def do_magic(node: TreeNode):
+            nonlocal nodes
+            nodes.append(node)
+            if node.left:
+                do_magic(node.left)
+            if node.right:
+                do_magic(node.right)
+
+        do_magic(root)
+
+        prev = root
+        prev.left = None
+        nodes[-1].right = None
+        for elem in nodes[1:]:
+            elem.left = None
+            prev.right = elem
+            prev = elem
+
         return root
-
 
 if __name__ == '__main__':
     task = Solution()
 
-    node8 = Node(5)
-    node7 = Node(23)
-    node6 = Node(1, node7, node8)
-    node5 = Node(6)
-    node4 = Node(7)
-    node3 = Node(15, node4, node5)
-    node2 = Node(20, None, node6)
-    node1 = Node(9, node3)
-    root = Node(3, node1, node2)
+    node1 = TreeNode(1)
+    node2 = TreeNode(2, node1)
+    node4 = TreeNode(4)
+    node3 = TreeNode(3, node2, node4)
+    node6 = TreeNode(6)
+    node7 = TreeNode(7, node6)
+    node5 = TreeNode(5, node3, node7)
+    node12 = TreeNode(12)
+    node10 = TreeNode(10)
+    node11 = TreeNode(11, node10, node12)
+    node9 = TreeNode(9, None, node11)
+    node8 = TreeNode(8, node5, node9)
 
-    inorder1 = [1, 2, 3, 4, 5, 6, 7, 9, 12, 13, 15, 20]
-    postorder1 = [1, 2, 4, 3, 6, 7, 5, 13, 20, 15, 12, 9]
+    inorder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
+    preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    preorder2 = [1, 2]
-    inorder2 = [2, 1]
-
-    root = task.connect(root)
-    print_tree(root)
+    print_tree(node8)
+    print('\n\n------------------------------------------------\n\n')
+    task.flatten(node8)
+    print_tree(node8)

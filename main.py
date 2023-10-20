@@ -13,19 +13,13 @@ class TreeNode:
 
 
 class Solution:
-    def flatten(self, root: Optional[TreeNode]) -> None:
-        curr = root
-
-        while curr:
-            if curr.left:
-                temp = curr.left
-
-                while temp.right:
-                    temp = temp.right
-
-                temp.right = curr.right
-                curr.left, curr.right = None, curr.left
-            curr = curr.right
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if not root or root.val > targetSum:
+            return False
+        if root.val == targetSum and not root.right and not root.left:
+            return True
+        return self.hasPathSum(root.left, targetSum - root.val) or \
+            self.hasPathSum(root.right, targetSum - root.val)
 
 
 if __name__ == '__main__':
@@ -48,7 +42,7 @@ if __name__ == '__main__':
     postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print_tree(node8)
-    print('\n\n------------------------------------------------\n\n')
-    task.flatten(node8)
-    print_tree(node8)
+    # print_tree(node8)
+    # print('\n\n------------------------------------------------\n\n')
+    print(task.hasPathSum(node8, 3))
+    # print_tree(node8)

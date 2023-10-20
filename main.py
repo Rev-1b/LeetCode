@@ -12,47 +12,21 @@ class TreeNode:
         return f'value = {self.val}'
 
 
-# class Solution:
-#     def flatten(self, root: Optional[TreeNode]) -> None:
-#         curr = root
-#
-#         while curr:
-#             if curr.left:
-#                 temp = curr.left
-#
-#                 while temp.right:
-#                     temp = temp.right
-#
-#                 temp.right = curr.right
-#                 curr.left, curr.right = None, curr.left
-#             curr = curr.right
-
-
 class Solution:
     def flatten(self, root: Optional[TreeNode]) -> None:
-        if not root or not root.left and not root.right:
-            return root
-        nodes = []
+        curr = root
 
-        def do_magic(node: TreeNode):
-            nonlocal nodes
-            nodes.append(node)
-            if node.left:
-                do_magic(node.left)
-            if node.right:
-                do_magic(node.right)
+        while curr:
+            if curr.left:
+                temp = curr.left
 
-        do_magic(root)
+                while temp.right:
+                    temp = temp.right
 
-        prev = root
-        prev.left = None
-        nodes[-1].right = None
-        for elem in nodes[1:]:
-            elem.left = None
-            prev.right = elem
-            prev = elem
+                temp.right = curr.right
+                curr.left, curr.right = None, curr.left
+            curr = curr.right
 
-        return root
 
 if __name__ == '__main__':
     task = Solution()

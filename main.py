@@ -13,30 +13,14 @@ class TreeNode:
 
 
 class Solution:
-    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -> None:
-        nums1[m:] = []
-        nums2[n:] = []
-        if not nums1:
-            nums1.extend(nums2)
-            return
-        for num in nums2:
-            if num <= nums1[0]:
-                nums1.insert(0, num)
-                continue
-            if num >= nums1[-1]:
-                nums1.append(num)
-                continue
+    def removeElement(self, nums: list[int], val: int) -> int:
+        index = 0
+        for i in range(len(nums)):
+            if nums[i] != val:
+                nums[index] = nums[i]
+                index += 1
+        return index
 
-            start, end = 0, len(nums1) - 1
-            while start <= end:
-                mid = (start + end) // 2
-                if nums1[mid - 1] <= num <= nums1[mid]:
-                    nums1.insert(mid, num)
-                    break
-                elif nums1[mid - 1] > num and nums1[mid] > num:
-                    end = mid - 1
-                else:
-                    start = mid + 1
 
 if __name__ == '__main__':
     task = Solution()

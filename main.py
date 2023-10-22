@@ -13,22 +13,25 @@ class TreeNode:
 
 
 class Solution:
-    def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        result = 0
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        max_sum = root.val
 
-        def do_magic(node: TreeNode, prev: str = '') -> None:
-            nonlocal result
-            curr_val = prev + str(node.val)
+        def do_magic(node: TreeNode) -> int:
+            nonlocal max_sum
+            if not node:
+                return 0
             if not node.left and not node.right:
-                result += int(curr_val)
-            else:
-                if node.left:
-                    do_magic(node.left, curr_val)
-                if node.right:
-                    do_magic(node.right, curr_val)
+                return node.val
+
+            left_sum = do_magic(node.left)
+            right_sum = do_magic(node.right)
+
+            max_sum = max(max_sum, left_sum + right_sum + node.val, left_sum, right_sum)
+
+            return max(left_sum, right_sum) + node.val
 
         do_magic(root)
-        return result
+        return max_sum
 
 
 if __name__ == '__main__':
@@ -47,8 +50,11 @@ if __name__ == '__main__':
     node9 = TreeNode(9, None, node11)
     node8 = TreeNode(8, node5, node9)
 
+    temp2 = TreeNode(-1)
+    temp1 = TreeNode(-2, temp2)
+
     inorder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.sumNumbers(node8))
+    print(task.maxPathSum(temp1))

@@ -13,21 +13,33 @@ class TreeNode:
 
 
 class Solution:
-    def __init__(self):
-        self.max_sum = float('-inf')
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
 
-    def maxPathSum(self, root: Optional[TreeNode]) -> int:
-        def do_magic(node: TreeNode) -> int:
-            if not node:
-                return 0
+        left_height = self.get_left_height(root)
+        right_height = self.get_right_height(root)
 
-            left_res = do_magic(node.left)
-            right_res = do_magic(node.right)
-            self.max_sum = max(self.max_sum, node.val, node.val + left_res, node.val + right_res, node.val + left_res + right_res)
-            return max(node.val, node.val + left_res, node.val + right_res)
+        if left_height == right_height:
+            return 2 ** left_height - 1
+        else:
+            return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 
-        do_magic(root)
-        return self.max_sum
+    @staticmethod
+    def get_left_height(node):
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    @staticmethod
+    def get_right_height(node):
+        height = 0
+        while node:
+            height += 1
+            node = node.right
+        return height
 
 
 if __name__ == '__main__':
@@ -54,4 +66,4 @@ if __name__ == '__main__':
     postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.maxPathSum(temp1))
+    print(task.countNodes(temp1))

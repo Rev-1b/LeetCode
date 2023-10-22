@@ -13,25 +13,21 @@ class TreeNode:
 
 
 class Solution:
-    def maxPathSum(self, root: Optional[TreeNode]) -> int:
-        max_sum = root.val
+    def __init__(self):
+        self.max_sum = float('-inf')
 
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
         def do_magic(node: TreeNode) -> int:
-            nonlocal max_sum
             if not node:
                 return 0
-            if not node.left and not node.right:
-                return node.val
 
-            left_sum = do_magic(node.left)
-            right_sum = do_magic(node.right)
-
-            max_sum = max(max_sum, left_sum + right_sum + node.val, left_sum, right_sum)
-
-            return max(left_sum, right_sum) + node.val
+            left_res = do_magic(node.left)
+            right_res = do_magic(node.right)
+            self.max_sum = max(self.max_sum, node.val, node.val + left_res, node.val + right_res, node.val + left_res + right_res)
+            return max(node.val, node.val + left_res, node.val + right_res)
 
         do_magic(root)
-        return max_sum
+        return self.max_sum
 
 
 if __name__ == '__main__':
@@ -50,8 +46,9 @@ if __name__ == '__main__':
     node9 = TreeNode(9, None, node11)
     node8 = TreeNode(8, node5, node9)
 
-    temp2 = TreeNode(-1)
-    temp1 = TreeNode(-2, temp2)
+    temp3 = TreeNode(3)
+    temp2 = TreeNode(-2)
+    temp1 = TreeNode(1, temp2, temp3)
 
     inorder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]

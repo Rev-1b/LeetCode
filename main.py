@@ -1,4 +1,4 @@
-from typing import Optional, Generator
+from typing import Optional
 from collections import deque
 
 
@@ -12,28 +12,29 @@ class TreeNode:
         return f'value = {self.val}'
 
 
-class BSTIterator:
-    def __init__(self, root: TreeNode):
-        self.stack = []
-        self.inorder(root)
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> list[int]:
+        if not root:
+            return root
+        result = [root.val]
 
-    def inorder(self, node):
-        while node:
-            self.stack.append(node)
-            node = node.left
+        storage = [root]
+        while storage:
+            temp_storage = []
+            for node in storage:
+                if node.left:
+                    temp_storage.append(node.left)
+                if node.right:
+                    temp_storage.append(node.right)
 
-    def next(self) -> int:
-        smallest = self.stack.pop()
-        if smallest.right:
-            self.inorder(smallest.right)
-        return smallest.val
-
-    def hasNext(self) -> bool:
-        return len(self.stack) > 0
+            if temp_storage:
+                result.append(temp_storage[-1].val)
+            storage = temp_storage
+        return result
 
 
 if __name__ == '__main__':
-    # task = Solution()
+    task = Solution()
 
     node1 = TreeNode(1)
     node2 = TreeNode(2, node1)
@@ -52,12 +53,4 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    # print(task.lowestCommonAncestor(node8, node10, node12))
-
-    obj = BSTIterator(node8)
-    for _ in range(12):
-        print(obj.hasNext())
-        print(obj.next())
-        print(obj.hasNext(), end='\n\n')
-
-
+    print(task.rightSideView(node8))

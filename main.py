@@ -13,22 +13,23 @@ class TreeNode:
 
 
 class BSTIterator:
-    def __init__(self, root: Optional[TreeNode]):
-        self.generator = self.do_magic(root)
-        self.answer = next(self.generator, None)
+    def __init__(self, root: TreeNode):
+        self.stack = []
+        self.inorder(root)
+
+    def inorder(self, node):
+        while node:
+            self.stack.append(node)
+            node = node.left
 
     def next(self) -> int:
-        answer, self.answer = self.answer, next(self.generator, None)
-        return answer
+        smallest = self.stack.pop()
+        if smallest.right:
+            self.inorder(smallest.right)
+        return smallest.val
 
     def hasNext(self) -> bool:
-        return bool(self.answer)
-
-    def do_magic(self, node: TreeNode) -> Generator[int, None, None]:
-        if node:
-            yield from self.do_magic(node.left)
-            yield node.val
-            yield from self.do_magic(node.right)
+        return len(self.stack) > 0
 
 
 if __name__ == '__main__':

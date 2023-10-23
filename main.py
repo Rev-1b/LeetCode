@@ -13,12 +13,9 @@ class TreeNode:
 
 
 class Solution:
-    def rightSideView(self, root: Optional[TreeNode]) -> list[int]:
-        if not root:
-            return root
-        result = [root.val]
-
+    def averageOfLevels(self, root: Optional[TreeNode]) -> list[float]:
         storage = [root]
+        result = [root.val]
         while storage:
             temp_storage = []
             for node in storage:
@@ -26,10 +23,11 @@ class Solution:
                     temp_storage.append(node.left)
                 if node.right:
                     temp_storage.append(node.right)
-
             if temp_storage:
-                result.append(temp_storage[-1].val)
+                avg = round(sum((i.val for i in temp_storage)) / len(temp_storage), 5)
+                result.append(avg)
             storage = temp_storage
+
         return result
 
 
@@ -53,4 +51,6 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.rightSideView(node8))
+    # print(task.averageOfLevels(node8))
+    nim = 123.423
+    print(round(nim, 2))

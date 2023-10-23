@@ -13,33 +13,16 @@ class TreeNode:
 
 
 class Solution:
-    def countNodes(self, root: Optional[TreeNode]) -> int:
-        if not root:
-            return 0
-
-        left_height = self.get_left_height(root)
-        right_height = self.get_right_height(root)
-
-        if left_height == right_height:
-            return 2 ** left_height - 1
-        else:
-            return 1 + self.countNodes(root.left) + self.countNodes(root.right)
-
-    @staticmethod
-    def get_left_height(node):
-        height = 0
-        while node:
-            height += 1
-            node = node.left
-        return height
-
-    @staticmethod
-    def get_right_height(node):
-        height = 0
-        while node:
-            height += 1
-            node = node.right
-        return height
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if root is None or root == p or root == q:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if left and right:
+            return root
+        if not left:
+            return right
+        return left
 
 
 if __name__ == '__main__':
@@ -58,12 +41,8 @@ if __name__ == '__main__':
     node9 = TreeNode(9, None, node11)
     node8 = TreeNode(8, node5, node9)
 
-    temp3 = TreeNode(3)
-    temp2 = TreeNode(-2)
-    temp1 = TreeNode(1, temp2, temp3)
-
     inorder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.countNodes(temp1))
+    print(task.lowestCommonAncestor(node8, node10, node12))

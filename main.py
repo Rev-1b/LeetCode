@@ -13,9 +13,9 @@ class TreeNode:
 
 
 class Solution:
-    def averageOfLevels(self, root: Optional[TreeNode]) -> list[float]:
+    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:
         storage = [root]
-        result = [root.val]
+        result = [[root.val]]
         while storage:
             temp_storage = []
             for node in storage:
@@ -24,10 +24,8 @@ class Solution:
                 if node.right:
                     temp_storage.append(node.right)
             if temp_storage:
-                avg = round(sum((i.val for i in temp_storage)) / len(temp_storage), 5)
-                result.append(avg)
+                result.append([i.val for i in temp_storage])
             storage = temp_storage
-
         return result
 
 
@@ -51,6 +49,4 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    # print(task.averageOfLevels(node8))
-    nim = 123.423
-    print(round(nim, 2))
+    print(task.levelOrder(node8))

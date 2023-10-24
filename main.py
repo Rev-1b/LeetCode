@@ -13,7 +13,7 @@ class TreeNode:
 
 
 class Solution:
-    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:
         storage = [root]
         result = [[root.val]]
         while storage:
@@ -24,7 +24,8 @@ class Solution:
                 if node.right:
                     temp_storage.append(node.right)
             if temp_storage:
-                result.append([i.val for i in temp_storage])
+                temp_res = reversed(temp_storage) if len(result) % 2 else temp_storage
+                result.append([i.val for i in temp_res])
             storage = temp_storage
         return result
 
@@ -49,4 +50,4 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.levelOrder(node8))
+    print(task.zigzagLevelOrder(node8))

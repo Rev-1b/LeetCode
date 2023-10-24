@@ -13,21 +13,23 @@ class TreeNode:
 
 
 class Solution:
-    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:
-        storage = [root]
-        result = [[root.val]]
-        while storage:
-            temp_storage = []
-            for node in storage:
-                if node.left:
-                    temp_storage.append(node.left)
-                if node.right:
-                    temp_storage.append(node.right)
-            if temp_storage:
-                temp_res = reversed(temp_storage) if len(result) % 2 else temp_storage
-                result.append([i.val for i in temp_res])
-            storage = temp_storage
-        return result
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        prev, min_value = float("-inf"), float("inf")
+
+        def do_magic(node: TreeNode) -> None:
+            nonlocal min_value, prev
+
+            if node.left:
+                do_magic(node.left)
+
+            min_value = min(min_value, node.val - prev)
+            prev = node.val
+
+            if node.right:
+                do_magic(node.right)
+
+        do_magic(root)
+        return min_value
 
 
 if __name__ == '__main__':
@@ -50,4 +52,7 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    print(task.zigzagLevelOrder(node8))
+    temp2 = TreeNode(2)
+    temp1 = TreeNode(1, None, temp2)
+
+    print(task.getMinimumDifference(temp1))

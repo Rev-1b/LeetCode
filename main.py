@@ -13,23 +13,25 @@ class TreeNode:
 
 
 class Solution:
-    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        prev, min_value = float("-inf"), float("inf")
+    def kthSmallest(self, root: TreeNode, k: int) -> int:
+        stack = []
+        current = root
 
-        def do_magic(node: TreeNode) -> None:
-            nonlocal min_value, prev
+        while True:
+            while current is not None:
+                stack.append(current)
+                current = current.left
 
-            if node.left:
-                do_magic(node.left)
+            if not stack:
+                break
 
-            min_value = min(min_value, node.val - prev)
-            prev = node.val
+            node = stack.pop()
+            k -= 1
 
-            if node.right:
-                do_magic(node.right)
+            if k == 0:
+                return node.val
 
-        do_magic(root)
-        return min_value
+            current = node.right
 
 
 if __name__ == '__main__':
@@ -55,4 +57,4 @@ if __name__ == '__main__':
     temp2 = TreeNode(2)
     temp1 = TreeNode(1, None, temp2)
 
-    print(task.getMinimumDifference(temp1))
+    print(task.kthSmallest(node8, 13))

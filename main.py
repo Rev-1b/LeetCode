@@ -1,5 +1,6 @@
 from typing import Optional
 from collections import deque
+from helper import build_tree, print_tree
 
 
 class TreeNode:
@@ -13,25 +14,23 @@ class TreeNode:
 
 
 class Solution:
-    def kthSmallest(self, root: TreeNode, k: int) -> int:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
         stack = []
-        current = root
+        prev_value = float('-inf')
+        curr = root
 
         while True:
-            while current is not None:
-                stack.append(current)
-                current = current.left
-
-            if not stack:
-                break
-
-            node = stack.pop()
-            k -= 1
-
-            if k == 0:
-                return node.val
-
-            current = node.right
+            if curr is not None:
+                stack.append(curr)
+                curr = curr.left
+            elif not stack:
+                return True
+            else:
+                node = stack.pop()
+                if node.val <= prev_value:
+                    return False
+                curr = node.right
+                prev_value = node.val
 
 
 if __name__ == '__main__':
@@ -54,7 +53,13 @@ if __name__ == '__main__':
     # postorder = [1, 2, 4, 3, 6, 7, 5, 10, 12, 11, 9]
     # preorder = [8, 5, 3, 2, 1, 4, 7, 6, 9, 11, 10, 12]
 
-    temp2 = TreeNode(2)
-    temp1 = TreeNode(1, None, temp2)
+    temp6 = TreeNode(6)
+    temp3 = TreeNode(3)
+    temp4 = TreeNode(4, temp3, temp6)
+    temp1 = TreeNode(1)
+    temp5 = TreeNode(5, temp1, temp4)
 
-    print(task.kthSmallest(node8, 13))
+    print_tree(temp5)
+
+
+    print(task.isValidBST(temp5))

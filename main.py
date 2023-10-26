@@ -3,44 +3,53 @@ from typing import Optional
 
 
 class Node:
-    def __init__(self, val=0, neighbors=None):
-        self.val = val
-        self.neighbors = neighbors if neighbors is not None else []
+    def __init__(self, char, neighbors=None):
+        self.char = char
+        self.neighbors = neighbors if neighbors is not None else {}
 
     def __str__(self):
-        return f'val = {self.val}'
+        return f'Char="{self.char}"'
 
 
 class Solution:
-    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        if not node:
-            return node
+    def calcEquation(self, equations: list[list[str]], values: list[float], queries: list[list[str]]) -> list[float]:
+        hashmap = {}
+        for vortexes, edge in zip(equations, values):
+            first, second = vortexes
+            first_node = hashmap.setdefault(first, Node(first))
+            second_node = hashmap.setdefault(second, Node(second))
 
-        hashmap = {node.val: Node(node.val, [])}
-        deq = deque([node])
+            first_node.neighbors[second_node] = edge
+            second_node.neighbors[first_node] = round(1 / edge, 5)
 
-        while deq:
-            curr = deq.popleft()
-            curr_clone = hashmap[curr.val]
+        def dfs_traversal(start: Node, multiplier=1.0) -> int:
+            if start.char == divisor:
+                return multiplier
+            visited.add(start)
+            for node, path in start.neighbors.items():
+                if node not in visited:
+                    tmp = dfs_traversal(node, multiplier * path)
+                    if tmp and tmp != -1.0:
+                        return tmp
+            return -1.0
 
-            for neighbor in curr.neighbors:
-                if neighbor.val not in hashmap:
-                    hashmap[neighbor.val] = Node(neighbor.val, [])
-                    deq.append(neighbor)
-                curr_clone.neighbors.append(hashmap[neighbor.val])
+        result = []
+        for dividend, divisor in queries:
+            if dividend not in hashmap or divisor not in hashmap:
+                result.append(-1.0)
+            else:
+                visited = set()
+                res = dfs_traversal(hashmap[dividend])
+                result.append(res)
 
-        return hashmap[1]
+        return result
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    node4 = Node(4)
-    node3 = Node(3)
-    node2 = Node(2)
-    node1 = Node(1, [node2, node4])
-    node2.neighbors = [node1, node3]
-    node3.neighbors = [node2, node4]
-    node4.neighbors = [node1, node3]
+    equations = [["a", "b"], ["b", "c"]]
+    values = [2.0, 3.0]
+    queries = [["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"]]
 
-    task.cloneGraph(node1)
+    print(task.calcEquation(equations, values, queries))

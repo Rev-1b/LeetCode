@@ -1,66 +1,46 @@
 from collections import deque
+from typing import Optional
+
+
+class Node:
+    def __init__(self, val=0, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+    def __str__(self):
+        return f'val = {self.val}'
 
 
 class Solution:
-    def solve(self, board: list[list[str]]) -> None:
-        n = len(board)
-        m = len(board[0])
-        
-        def do_magic(deq: deque) -> None:
-            while deq:
-                elem_i, elem_j = deq.popleft()
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        if not node:
+            return node
 
-                if 0 < elem_i and board[elem_i - 1][elem_j] == 'O':
-                    board[elem_i - 1][elem_j] = 'S'
-                    deq.append((elem_i - 1, elem_j))
+        hashmap = {node.val: Node(node.val, [])}
+        deq = deque([node])
 
-                if n- 1 > elem_i and board[elem_i + 1][elem_j] == 'O':
-                    board[elem_i + 1][elem_j] = 'S'
-                    deq.append((elem_i + 1, elem_j))
+        while deq:
+            curr = deq.popleft()
+            curr_clone = hashmap[curr.val]
 
-                if 0 < elem_j and board[elem_i][elem_j - 1] == 'O':
-                    board[elem_i][elem_j - 1] = 'S'
-                    deq.append((elem_i, elem_j - 1))
+            for neighbor in curr.neighbors:
+                if neighbor.val not in hashmap:
+                    hashmap[neighbor.val] = Node(neighbor.val, [])
+                    deq.append(neighbor)
+                curr_clone.neighbors.append(hashmap[neighbor.val])
 
-                if m - 1 > elem_j and board[elem_i][elem_j + 1] == 'O':
-                    board[elem_i][elem_j + 1] = 'S'
-                    deq.append((elem_i, elem_j + 1))
-
-        for j in range(m):
-            if board[0][j] == 'O':
-                board[0][j] = 'S'
-                do_magic(deque(((0, j),)))
-
-            if board[n- 1][j] == 'O':
-                board[n- 1][j] = 'S'
-                do_magic(deque(((n- 1, j),)))
-
-        for i in range(n):
-            if board[i][0] == 'O':
-                board[i][0] = 'S'
-                do_magic(deque(((i, 0),)))
-
-            if board[i][m - 1] == 'O':
-                board[i][m - 1] = 'S'
-                do_magic(deque(((i, m - 1),)))
-
-        for k in range(n):
-            for q in range(m):
-                if board[k][q] == 'S':
-                    board[k][q] = 'O'
-
-                elif board[k][q] == 'O':
-                    board[k][q] = 'X'
+        return hashmap[1]
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    board = [["X", "X", "X", "X"],
-             ["X", "O", "O", "X"],
-             ["X", "X", "O", "X"],
-             ["X", "O", "X", "X"]]
+    node4 = Node(4)
+    node3 = Node(3)
+    node2 = Node(2)
+    node1 = Node(1, [node2, node4])
+    node2.neighbors = [node1, node3]
+    node3.neighbors = [node2, node4]
+    node4.neighbors = [node1, node3]
 
-    task.solve(board)
-    for w in board:
-        print(*w)
+    task.cloneGraph(node1)

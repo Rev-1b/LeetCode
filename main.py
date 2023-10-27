@@ -1,55 +1,43 @@
-from collections import deque
+from collections import deque, defaultdict
 from typing import Optional
 
 
 class Node:
-    def __init__(self, char, neighbors=None):
-        self.char = char
-        self.neighbors = neighbors if neighbors is not None else {}
+    def __init__(self, val, neighbors=None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+        self.visited = False
 
     def __str__(self):
-        return f'Char="{self.char}"'
+        return f'Val="{self.val}"'
 
 
 class Solution:
-    def calcEquation(self, equations: list[list[str]], values: list[float], queries: list[list[str]]) -> list[float]:
-        hashmap = {}
-        for vortexes, edge in zip(equations, values):
-            first, second = vortexes
-            first_node = hashmap.setdefault(first, Node(first))
-            second_node = hashmap.setdefault(second, Node(second))
+    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
+        storage = [[] for _ in range(numCourses)]
+        income_links = [0] * numCourses
+        for end, start in prerequisites:
+            storage[start].append(end)
+            income_links[end] += 1
 
-            first_node.neighbors[second_node] = edge
-            second_node.neighbors[first_node] = round(1 / edge, 5)
+        queue = deque(i for (i, d) in enumerate(income_links) if d == 0)
 
-        def dfs_traversal(start: Node, multiplier=1.0) -> int:
-            if start.char == divisor:
-                return multiplier
-            visited.add(start)
-            for node, path in start.neighbors.items():
-                if node not in visited:
-                    tmp = dfs_traversal(node, multiplier * path)
-                    if tmp and tmp != -1.0:
-                        return tmp
-            return -1.0
+        visited = 0
+        while queue:
+            node = queue.popleft()
+            visited += 1
+            for curr in storage[node]:
+                income_links[curr] -= 1
+                if not income_links[curr]:
+                    queue.append(curr)
 
-        result = []
-        for dividend, divisor in queries:
-            if dividend not in hashmap or divisor not in hashmap:
-                result.append(-1.0)
-            else:
-                visited = set()
-                res = dfs_traversal(hashmap[dividend])
-                result.append(res)
-
-        return result
+        return visited == numCourses
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    equations = [["a", "b"], ["b", "c"]]
-    values = [2.0, 3.0]
-    queries = [["a", "c"], ["b", "a"], ["a", "e"], ["a", "a"], ["x", "x"]]
+    numCourses = 2
+    prerequisites = [[1, 0]]
 
-    print(task.calcEquation(equations, values, queries))
+    print(task.canFinish(numCourses, prerequisites))

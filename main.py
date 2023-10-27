@@ -1,42 +1,52 @@
 from collections import deque
+from itertools import chain
 
 
 class Node:
     def __init__(self, val, neighbors=None):
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
-        self.visited = False
 
     def __str__(self):
         return f'Val="{self.val}"'
 
 
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
-        outgoing = [[] for _ in range(numCourses)]
-        incoming = [0] * numCourses
+    def snakesAndLadders(self, board: list[list[int]]) -> int:
 
-        for end, start in prerequisites:
-            outgoing[start].append(end)
-            incoming[end] += 1
+        board.reverse()
+        for i in range(1, len(board), 2):
+            board[i].reverse()
+        cells = [None] + list(chain(*board))
 
-        queue = deque(i for i, d in enumerate(incoming) if not d)
-        right_order = []
-        while queue:
-            curr = queue.popleft()
-            right_order.append(curr)
-            for child in outgoing[curr]:
-                incoming[child] -= 1
-                if not incoming[child]:
-                    queue.append(child)
+        stack = [1]
+        visited = {1}
+        n = len(board) ** 2
+        steps = 0
 
-        return right_order if len(right_order) == numCourses else []
+        while stack:
+            temp_stack = []
+            for elem in stack:
+                if elem == n:
+                    return steps
+                for curr in range(elem + 1, min(elem + 7, n + 1)):
+                    curr = curr if cells[curr] == -1 else cells[curr]
+                    if curr not in visited:
+                        visited.add(curr)
+                        temp_stack.append(curr)
+            steps += 1
+            stack = temp_stack
+
+        return -1
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    numCourses = 4
-    prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2], [1, 3]]
+    board = [[-1, -1, 19, 10, -1],
+             [2, -1, -1, 6, -1],
+             [-1, 17, -1, 19, -1],
+             [25, -1, 20, -1, -1],
+             [-1, -1, -1, -1, 15]]
 
-    print(task.canFinish(numCourses, prerequisites))
+    print(task.snakesAndLadders(board))

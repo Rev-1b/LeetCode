@@ -1,5 +1,4 @@
-from collections import deque, defaultdict
-from typing import Optional
+from collections import deque
 
 
 class Node:
@@ -14,30 +13,30 @@ class Node:
 
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
-        storage = [[] for _ in range(numCourses)]
-        income_links = [0] * numCourses
+        outgoing = [[] for _ in range(numCourses)]
+        incoming = [0] * numCourses
+
         for end, start in prerequisites:
-            storage[start].append(end)
-            income_links[end] += 1
+            outgoing[start].append(end)
+            incoming[end] += 1
 
-        queue = deque(i for (i, d) in enumerate(income_links) if d == 0)
-
-        visited = 0
+        queue = deque(i for i, d in enumerate(incoming) if not d)
+        right_order = []
         while queue:
-            node = queue.popleft()
-            visited += 1
-            for curr in storage[node]:
-                income_links[curr] -= 1
-                if not income_links[curr]:
-                    queue.append(curr)
+            curr = queue.popleft()
+            right_order.append(curr)
+            for child in outgoing[curr]:
+                incoming[child] -= 1
+                if not incoming[child]:
+                    queue.append(child)
 
-        return visited == numCourses
+        return right_order if len(right_order) == numCourses else []
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    numCourses = 2
-    prerequisites = [[1, 0]]
+    numCourses = 4
+    prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2], [1, 3]]
 
     print(task.canFinish(numCourses, prerequisites))

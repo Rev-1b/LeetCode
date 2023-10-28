@@ -1,48 +1,42 @@
-from collections import deque
-
-
 class Node:
-    def __init__(self, char: str, children=None, last_char=False):
-        self.char = char
+    def __init__(self, children=None):
         self.children = children if children is not None else {}
-        self.last_char = last_char
-
-    def __str__(self):
-        return f'Chars="{self.char}"'
+        self.is_word = False
 
 
-class Trie:
+class WordDictionary:
+
     def __init__(self):
-        self.root = Node('')
+        self.root = Node()
 
-    def insert(self, word: str) -> None:
+    def addWord(self, word: str) -> None:
         curr = self.root
         for letter in word:
-            curr = curr.children.setdefault(letter, Node(letter))
-        curr.last_char = True
+            curr = curr.children.setdefault(letter, Node())
+        curr.is_word = True
 
     def search(self, word: str) -> bool:
-        curr = self.root
-        for letter in word:
-            if letter not in curr.children:
-                return False
-            curr = curr.children[letter]
-        return curr.last_char
+        def do_magic(node: Node, index: int) -> bool:
+            if index == len(word):
+                return node.is_word
+            if word[index] == '.':
+                for child in node.children.values():
+                    res = do_magic(child, index + 1)
+                    if res:
+                        return True
+            if word[index] in node.children:
+                return do_magic(node.children[word[index]], index + 1)
+            return False
 
-    def startsWith(self, prefix: str) -> bool:
-        curr = self.root
-        for letter in prefix:
-            if letter not in curr.children:
-                return False
-            curr = curr.children[letter]
-        return not curr.last_char
+        return do_magic(self.root, 0)
 
 
 if __name__ == '__main__':
-    # task = Solution()
-    # print(task.ladderLength(beginWord, endWord, wordList))
-
-    trie = Trie()
-    trie.insert("a")
-    print(trie.search("a"))
-    print(trie.startsWith("a"))
+    task = WordDictionary()
+    task.addWord("bad")
+    task.addWord("dad")
+    task.addWord("mad")
+    print(task.search("pad"))
+    print(task.search("bad"))
+    print(task.search(".ad"))
+    print(task.search("b.."))

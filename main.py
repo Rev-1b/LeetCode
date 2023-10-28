@@ -2,43 +2,47 @@ from collections import deque
 
 
 class Node:
-    def __init__(self, chars: str, neighbors=None):
-        self.chars = chars
-        self.neighbors = neighbors if neighbors is not None else []
-        self.visited = False
+    def __init__(self, char: str, children=None, last_char=False):
+        self.char = char
+        self.children = children if children is not None else {}
+        self.last_char = last_char
 
     def __str__(self):
-        return f'Chars="{self.chars}"'
+        return f'Chars="{self.char}"'
 
 
-class Solution:
-    def minMutation(self, start_gene: str, end_gene: str, bank: list[str]) -> int:
-        storage = [start_gene]
-        visited = {start_gene}
-        steps = 0
+class Trie:
+    def __init__(self):
+        self.root = Node('')
 
-        while storage:
-            temp_storage = []
+    def insert(self, word: str) -> None:
+        curr = self.root
+        for letter in word:
+            curr = curr.children.setdefault(letter, Node(letter))
+        curr.last_char = True
 
-            for curr in storage:
-                if curr == end_gene:
-                    return steps
-                neighbors = [gene for gene in bank if sum(a != b for a, b in zip(curr, gene)) == 1]
-                for neighbor in neighbors:
-                    if neighbor not in visited:
-                        visited.add(neighbor)
-                        temp_storage.append(neighbor)
+    def search(self, word: str) -> bool:
+        curr = self.root
+        for letter in word:
+            if letter not in curr.children:
+                return False
+            curr = curr.children[letter]
+        return curr.last_char
 
-            steps += 1
-            storage = temp_storage
-        return -1
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+        for letter in prefix:
+            if letter not in curr.children:
+                return False
+            curr = curr.children[letter]
+        return not curr.last_char
 
 
 if __name__ == '__main__':
-    task = Solution()
+    # task = Solution()
+    # print(task.ladderLength(beginWord, endWord, wordList))
 
-    startGene = "AACCGGTT"
-    endGene = "AAACGGTA"
-    Bank = []
-
-    print(task.minMutation(startGene, endGene, Bank))
+    trie = Trie()
+    trie.insert("a")
+    print(trie.search("a"))
+    print(trie.startsWith("a"))

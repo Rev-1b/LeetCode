@@ -1,52 +1,44 @@
 from collections import deque
-from itertools import chain
 
 
 class Node:
-    def __init__(self, val, neighbors=None):
-        self.val = val
+    def __init__(self, chars: str, neighbors=None):
+        self.chars = chars
         self.neighbors = neighbors if neighbors is not None else []
+        self.visited = False
 
     def __str__(self):
-        return f'Val="{self.val}"'
+        return f'Chars="{self.chars}"'
 
 
 class Solution:
-    def snakesAndLadders(self, board: list[list[int]]) -> int:
-
-        board.reverse()
-        for i in range(1, len(board), 2):
-            board[i].reverse()
-        cells = [None] + list(chain(*board))
-
-        stack = [1]
-        visited = {1}
-        n = len(board) ** 2
+    def minMutation(self, start_gene: str, end_gene: str, bank: list[str]) -> int:
+        storage = [start_gene]
+        visited = {start_gene}
         steps = 0
 
-        while stack:
-            temp_stack = []
-            for elem in stack:
-                if elem == n:
-                    return steps
-                for curr in range(elem + 1, min(elem + 7, n + 1)):
-                    curr = curr if cells[curr] == -1 else cells[curr]
-                    if curr not in visited:
-                        visited.add(curr)
-                        temp_stack.append(curr)
-            steps += 1
-            stack = temp_stack
+        while storage:
+            temp_storage = []
 
+            for curr in storage:
+                if curr == end_gene:
+                    return steps
+                neighbors = [gene for gene in bank if sum(a != b for a, b in zip(curr, gene)) == 1]
+                for neighbor in neighbors:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        temp_storage.append(neighbor)
+
+            steps += 1
+            storage = temp_storage
         return -1
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    board = [[-1, -1, 19, 10, -1],
-             [2, -1, -1, 6, -1],
-             [-1, 17, -1, 19, -1],
-             [25, -1, 20, -1, -1],
-             [-1, -1, -1, -1, 15]]
+    startGene = "AACCGGTT"
+    endGene = "AAACGGTA"
+    Bank = []
 
-    print(task.snakesAndLadders(board))
+    print(task.minMutation(startGene, endGene, Bank))

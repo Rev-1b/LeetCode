@@ -1,15 +1,20 @@
 class Solution:
-    def canJump(self, nums: list[int]) -> bool:
-        target = nums[-1]
+    def jump(self, nums: list[int]) -> int:
+        ans = 0
+        end = 0
+        farthest = 0
 
-        for i in range(len(nums) - 1, -1, -1):
-            if nums[i] + i >= target:
-                target = i
+        # Implicit BFS
+        for i in range(len(nums) - 1):
+            farthest = max(farthest, i + nums[i])
+            if farthest >= len(nums) - 1:
+                ans += 1
+                break
+            if i == end:  # Visited all the items on the current level
+                ans += 1  # Increment the level
+                end = farthest  # Make the queue size for the next level
 
-        if target == 0:
-            return True
-        else:
-            return False
+        return ans
 
 
 if __name__ == '__main__':
@@ -17,4 +22,4 @@ if __name__ == '__main__':
 
     nums = [2, 3, 1, 1, 4]
 
-    print(task.canJump(nums))
+    print(task.jump(nums))

@@ -1,23 +1,28 @@
 class Solution:
-    def combine(self, n: int, k: int) -> list[list[int]]:
+    def permute(self, nums1: list[int]) -> list[list[int]]:
+        if len(nums1) == 1:
+            return [nums1]
+
+        nums1 = set(nums1)
         result = []
 
-        def backtrack(remain, comb, mod):
-            if remain == 0:
-                result.append(comb.copy())
-            else:
-                for i in range(mod, n + 1):
-                    comb.append(i)
-                    backtrack(remain - 1, comb, i + 1)
-                    comb.pop()
+        def do_magic(nums: set[int], prev: list[int]) -> None:
+            if len(nums) == 1:
+                result.append([*prev, *nums])
+                return
 
-        backtrack(k, [], 1)
+            for num in nums:
+                nums_copy = nums.copy()
+                nums_copy.remove(num)
+                do_magic(nums_copy, [*prev, num])
+
+        do_magic(nums1, [])
         return result
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    n, k = 6, 3
+    nums2 = [1, 2, 3, 4]
 
-    print(task.combine(n, k))
+    print(task.permute(nums2))

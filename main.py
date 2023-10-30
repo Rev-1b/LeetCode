@@ -1,25 +1,27 @@
 class Solution:
-    def jump(self, nums: list[int]) -> int:
-        ans = 0
-        end = 0
-        farthest = 0
+    def letterCombinations(self, digits: str) -> list[str]:
+        keyboard = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+            '': ''
+        }
+        if len(digits) <= 1:
+            return list(keyboard[digits])
 
-        # Implicit BFS
-        for i in range(len(nums) - 1):
-            farthest = max(farthest, i + nums[i])
-            if farthest >= len(nums) - 1:
-                ans += 1
-                break
-            if i == end:  # Visited all the items on the current level
-                ans += 1  # Increment the level
-                end = farthest  # Make the queue size for the next level
+        prev_combinations = self.letterCombinations(digits[1:])
 
-        return ans
+        return [letter + comb for letter in keyboard[digits[0]] for comb in prev_combinations]
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    nums = [2, 3, 1, 1, 4]
+    digits = ''
 
-    print(task.jump(nums))
+    print(task.letterCombinations(digits))

@@ -1,27 +1,23 @@
 class Solution:
-    def letterCombinations(self, digits: str) -> list[str]:
-        keyboard = {
-            "2": "abc",
-            "3": "def",
-            "4": "ghi",
-            "5": "jkl",
-            "6": "mno",
-            "7": "pqrs",
-            "8": "tuv",
-            "9": "wxyz",
-            '': ''
-        }
-        if len(digits) <= 1:
-            return list(keyboard[digits])
+    def combine(self, n: int, k: int) -> list[list[int]]:
+        result = []
 
-        prev_combinations = self.letterCombinations(digits[1:])
+        def backtrack(remain, comb, mod):
+            if remain == 0:
+                result.append(comb.copy())
+            else:
+                for i in range(mod, n + 1):
+                    comb.append(i)
+                    backtrack(remain - 1, comb, i + 1)
+                    comb.pop()
 
-        return [letter + comb for letter in keyboard[digits[0]] for comb in prev_combinations]
+        backtrack(k, [], 1)
+        return result
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    digits = ''
+    n, k = 6, 3
 
-    print(task.letterCombinations(digits))
+    print(task.combine(n, k))

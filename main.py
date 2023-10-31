@@ -1,28 +1,24 @@
 class Solution:
-    def permute(self, nums1: list[int]) -> list[list[int]]:
-        if len(nums1) == 1:
-            return [nums1]
-
-        nums1 = set(nums1)
+    def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
         result = []
 
-        def do_magic(nums: set[int], prev: list[int]) -> None:
-            if len(nums) == 1:
-                result.append([*prev, *nums])
-                return
-
+        def do_magic(comb: list[int], rest: int, nums: list[int]) -> None:
             for num in nums:
-                nums_copy = nums.copy()
-                nums_copy.remove(num)
-                do_magic(nums_copy, [*prev, num])
+                if rest - num <= 0:
+                    if rest - num == 0:
+                        result.append([*comb, num])
+                    return
+                index = nums.index(num)
+                do_magic([*comb, num], rest - num, nums[index:])
 
-        do_magic(nums1, [])
+        do_magic([], target, candidates)
         return result
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    nums2 = [1, 2, 3, 4]
+    candidates1 = [2, 3, 6, 7]
+    target1 = 7
 
-    print(task.permute(nums2))
+    print(task.combinationSum(candidates1, target1))

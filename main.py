@@ -1,55 +1,27 @@
-from collections import Counter
+from typing import Optional
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 
 class Solution:
-    def exist(self, board: list[list[str]], word: str) -> bool:
-
-        rows = len(board)
-        columns = len(board[0])
-
-        if len(word) > rows * columns:
-            return False
-
-        count = Counter(sum(board, []))
-
-        for char, char_number in Counter(word).items():
-            if count[char] < char_number:
-                return False
-
-        if count[word[0]] > count[word[-1]]:
-            word = word[::-1]
-
-        visited = set()
-
-        def do_magic(row, col, i):
-            if i == len(word):
-                return True
-
-            if not 0 <= row < rows or not 0 <= col < columns or word[i] != board[row][col] or (row, col) in visited:
-                return False
-
-            visited.add((row, col))
-            res = (
-                    do_magic(row + 1, col, i + 1) or
-                    do_magic(row - 1, col, i + 1) or
-                    do_magic(row, col + 1, i + 1) or
-                    do_magic(row, col - 1, i + 1)
-            )
-            visited.remove((row, col))
-
-            return res
-
-        for i in range(rows):
-            for j in range(columns):
-                if do_magic(i, j, 0):
-                    return True
-        return False
+    def sortedArrayToBST(self, nums: list[int]) -> Optional[TreeNode]:
+        if not nums:
+            return
+        node_index = len(nums) // 2
+        node = TreeNode(nums[node_index])
+        node.left = self.sortedArrayToBST(nums[:node_index])
+        node.right = self.sortedArrayToBST(nums[node_index + 1:])
+        return node
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    board1 = [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]]
-    word1 = "ABCCED"
+    nums1 = [-10, -3, 0, 5, 9]
 
-    print(task.exist(board1, word1))
+    print(task.sortedArrayToBST(nums1))

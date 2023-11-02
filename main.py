@@ -1,41 +1,26 @@
 class Solution:
-    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
-        up, down = 0, len(matrix) - 1
+    def findPeakElement(self, nums: list[int]) -> int:
+        start, end = 0, len(nums) - 1
 
-        row = None
-        while up <= down:
-            mid = (up + down) // 2
-            if matrix[mid][0] > target:
-                down = mid - 1
-            elif matrix[mid][-1] < target:
-                up = mid + 1
-            else:
-                row = matrix[mid]
-                break
+        if end == 1:
+            return 0 if nums[start] > nums[end] else 1
 
-        if row is None:
-            return False
-
-        start, end = 0, len(row) - 1
         while start <= end:
             mid = (start + end) // 2
-            if row[mid] == target:
-                return True
-            if row[mid] < target:
-                start = mid + 1
-            else:
-                end = mid - 1
 
-        return False
+            if mid == 0 or mid == len(nums) - 1 or nums[mid - 1] < nums[mid] > nums[mid + 1]:
+                return mid
+
+            if nums[mid] < nums[mid + 1]:
+                start = mid + 1
+
+            else:
+                end = mid
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    matrix = [[1,  3,  5,  7],
-              [10, 11, 16, 20],
-              [23, 30, 34, 60]]
+    nums = [3, 4, 3, 2, 1]
 
-    target = 0
-
-    print(task.searchMatrix(matrix, target))
+    print(task.findPeakElement(nums))

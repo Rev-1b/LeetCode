@@ -1,23 +1,28 @@
 class Solution:
-    def maxSubArray(self, nums: list[int]) -> int:
-        max_sum = float('-inf')
+    def maxSubarraySumCircular(self, nums: list[int]) -> int:
+
         curr_sum = 0
 
-        for num in nums:
-            curr_sum += num
+        local_min_sum, global_min_sum = 0, float('inf')
+        local_max_sum, global_max_sum = 0, float('-inf')
 
-            if curr_sum > max_sum:
-                max_sum = curr_sum
+        for number in nums:
+            local_min_sum = min(local_min_sum + number, number)
+            global_min_sum = min(global_min_sum, local_min_sum)
 
-            if curr_sum < 0:
-                curr_sum = 0
+            local_max_sum = max(local_max_sum + number, number)
+            global_max_sum = max(global_max_sum, local_max_sum)
 
-        return max_sum
+            curr_sum += number
+
+        if global_max_sum > 0:
+            return max(curr_sum - global_min_sum, global_max_sum)
+        else:
+            return global_max_sum
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    nums1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-
-    print(task.maxSubArray(nums1))
+    nums1 = [5, -3, 5]
+    print(task.maxSubarraySumCircular(nums1))

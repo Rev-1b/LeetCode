@@ -1,27 +1,41 @@
 class Solution:
-    def searchInsert(self, nums: list[int], target: int) -> int:
-        start, end = 0, len(nums) - 1
+    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
+        up, down = 0, len(matrix) - 1
 
+        row = None
+        while up <= down:
+            mid = (up + down) // 2
+            if matrix[mid][0] > target:
+                down = mid - 1
+            elif matrix[mid][-1] < target:
+                up = mid + 1
+            else:
+                row = matrix[mid]
+                break
+
+        if row is None:
+            return False
+
+        start, end = 0, len(row) - 1
         while start <= end:
             mid = (start + end) // 2
-
-            if nums[mid] == target:
-                return mid
-
-            if nums[mid] < target:
+            if row[mid] == target:
+                return True
+            if row[mid] < target:
                 start = mid + 1
             else:
                 end = mid - 1
 
-        if nums[mid] > target:
-            return mid
-        return mid + 1
+        return False
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    nums = [1, 3, 5, 6, 8, 13, 19]
-    target = 18
+    matrix = [[1,  3,  5,  7],
+              [10, 11, 16, 20],
+              [23, 30, 34, 60]]
 
-    print(task.searchInsert(nums, target))
+    target = 0
+
+    print(task.searchMatrix(matrix, target))

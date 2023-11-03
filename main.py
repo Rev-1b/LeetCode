@@ -1,26 +1,32 @@
 class Solution:
-    def findPeakElement(self, nums: list[int]) -> int:
-        start, end = 0, len(nums) - 1
+    def search(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
 
-        if end == 1:
-            return 0 if nums[start] > nums[end] else 1
+        while left <= right:
+            mid = (left + right) // 2
 
-        while start <= end:
-            mid = (start + end) // 2
-
-            if mid == 0 or mid == len(nums) - 1 or nums[mid - 1] < nums[mid] > nums[mid + 1]:
+            if nums[mid] == target:
                 return mid
 
-            if nums[mid] < nums[mid + 1]:
-                start = mid + 1
+            if nums[left] <= nums[mid]:
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
 
             else:
-                end = mid
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+        return -1
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    nums = [3, 4, 3, 2, 1]
+    nums = [3,1]
+    target = 0
 
-    print(task.findPeakElement(nums))
+    print(task.search(nums, target))

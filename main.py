@@ -1,18 +1,29 @@
+from random import randint
+
+
 class Solution:
-    def productExceptSelf(self, nums: list[int]) -> list[int]:
-        answer = [1] * (len(nums))
+    def findKthLargest(self, nums: list[int], k: int) -> int:
+        left, right = 0, len(nums) - 1
+        while True:
+            temp_pivot = randint(left, right)
+            pivot_index = self.do_magic(nums, left, right, temp_pivot)
+            if len(nums) - k == pivot_index:
+                return nums[pivot_index]
+            if len(nums) - k > pivot_index:
+                left = pivot_index + 1
+            else:
+                right = pivot_index - 1
 
-        prefix = 1
-        for i in range(len(nums)):
-            answer[i] = prefix
-            prefix *= nums[i]
-
-        postfix = 1
-        for j in range(len(nums) - 1, -1, -1):
-            answer[j] *= postfix
-            postfix *= nums[j]
-
-        return answer
+    def do_magic(self, nums, left, right, pivot):
+        pivot_num = nums[pivot]
+        nums[pivot], nums[right] = nums[right], nums[pivot]
+        far_left_pos = left
+        for i in range(left, right):
+            if nums[i] < pivot_num:
+                nums[i], nums[far_left_pos] = nums[far_left_pos], nums[i]
+                far_left_pos += 1
+        nums[far_left_pos], nums[right] = nums[right], nums[far_left_pos]
+        return far_left_pos
 
 
 if __name__ == '__main__':
@@ -20,4 +31,4 @@ if __name__ == '__main__':
 
     nums = [3, 2, 1, 5, 6, 4]
 
-    print(task.productExceptSelf(nums))
+    print(task.findKthLargest(nums, 2))

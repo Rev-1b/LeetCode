@@ -2,19 +2,30 @@ import heapq
 
 
 class Solution:
-    def findKthLargest(self, nums: list[int], k: int) -> int:
-        heap = nums[:k]
+    def kSmallestPairs(self, nums1: list[int], nums2: list[int], k: int) -> list[list[int]]:
+        heap = []
         heapq.heapify(heap)
-        for num in nums[k:]:
-            if num > heap[0]:
-                heapq.heappop(heap)
-                heapq.heappush(heap, num)
-        return heap[0]
 
+        for i in range(min(len(nums1), k)):
+            heapq.heappush(heap, (nums1[i] + nums2[0], nums1[i], nums2[0], 0))
+
+        result = []
+        while k > 0 and heap:
+            _, num1, num2, index = heapq.heappop(heap)
+            result.append((num1, num2))
+
+            if index + 1 < len(nums2):
+                heapq.heappush(heap, (num1 + nums2[index + 1], num1, nums2[index + 1], index + 1))
+
+            k -= 1
+
+        return result
+
+
+nums1 = [1, 2]
+nums2 = [3]
+k = 2
 
 if __name__ == '__main__':
     task = Solution()
-
-    nums = [3, 2, 1, 5, 6, 4]
-
-    print(task.findKthLargest(nums, 2))
+    print(task.kSmallestPairs(nums1, nums2, k))

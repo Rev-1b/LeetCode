@@ -1,15 +1,14 @@
 class Solution:
-    def reverseBits(self, n):
-        res = 0
-        for i in range(32):
-            if n & 1:
-                res += 1 << (31 - i)
+    def hammingWeight(self, n: int) -> int:
+        counter = 0
+        while n:
+            counter += n & 1
             n >>= 1
-        return res
+        return counter
 
 
-n = 11111111111111111111111111111101
+n = 0b11111111111111111111111111111101
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.reverseBits(n))
+    print(task.hammingWeight(n))

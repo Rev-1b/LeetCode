@@ -1,14 +1,15 @@
 class Solution:
-    def hammingWeight(self, n: int) -> int:
-        counter = 0
-        while n:
-            counter += n & 1
-            n >>= 1
-        return counter
+    def singleNumber(self, nums: list[int]) -> int:
+        result = 0
+
+        for num in nums:
+            result ^= num
+
+        return result
 
 
-n = 0b11111111111111111111111111111101
+nums = [4, 1, 2, 1, 2]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.hammingWeight(n))
+    print(task.singleNumber(nums))

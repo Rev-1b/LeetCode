@@ -1,21 +1,22 @@
 class Solution:
-    def isPalindrome(self, x: int) -> bool:
-        if x < 0:
-            return False
+    def plusOne(self, digits: list[int]) -> list[int]:
+        i = len(digits) - 1
+        rest = 1
 
-        reversed_x = 0
-        curr = x
+        while digits[i] + rest == 10:
+            digits[i] = 0
+            i -= 1
 
-        while curr > 0:
-            digit = curr % 10
-            reversed_x = reversed_x * 10 + digit
-            curr //= 10
+        if i == -1:
+            digits.insert(0, 1)
+        else:
+            digits[i] = digits[i] + 1
 
-        return x == reversed_x
+        return digits
 
 
-x = 121
+digits = [9, 8, 9, 9, 9]
+
 if __name__ == '__main__':
-
     task = Solution()
-    print(task.isPalindrome(x))
+    print(task.plusOne(digits))

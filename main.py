@@ -1,23 +1,21 @@
 class Solution:
-    def singleNumber(self, nums):
-        ans = 0
+    def isPalindrome(self, x: int) -> bool:
+        if x < 0:
+            return False
 
-        for i in range(32):
-            bit_sum = 0
-            for num in nums:
-                if num < 0:
-                    num = num & (2**32-1)
-                bit_sum += (num >> i) & 1
-            bit_sum %= 3
-            ans |= bit_sum << i
+        reversed_x = 0
+        curr = x
 
-        if ans >= 2**31:
-            ans -= 2**32
+        while curr > 0:
+            digit = curr % 10
+            reversed_x = reversed_x * 10 + digit
+            curr //= 10
 
-        return ans
+        return x == reversed_x
 
-nums = [2, 2, 3, 2]
 
+x = 121
 if __name__ == '__main__':
+
     task = Solution()
-    print(task.singleNumber(nums))
+    print(task.isPalindrome(x))

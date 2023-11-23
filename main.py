@@ -1,22 +1,16 @@
 class Solution:
-    def plusOne(self, digits: list[int]) -> list[int]:
-        i = len(digits) - 1
-        rest = 1
+    def trailingZeroes(self, n: int) -> int:
+        result = 0
+        n //= 5
 
-        while digits[i] + rest == 10:
-            digits[i] = 0
-            i -= 1
+        while n:
+            result += n
+            n //= 5
 
-        if i == -1:
-            digits.insert(0, 1)
-        else:
-            digits[i] = digits[i] + 1
-
-        return digits
+        return result
 
 
-digits = [9, 8, 9, 9, 9]
-
+n = 120
 if __name__ == '__main__':
     task = Solution()
-    print(task.plusOne(digits))
+    print(task.trailingZeroes(n))

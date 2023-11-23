@@ -1,23 +1,21 @@
 class Solution:
-    def mySqrt(self, x: int) -> int:
-        if x == 0:
-            return 0
-        left, right = 1, x
+    def myPow(self, x: float, n: int) -> float:
 
-        while left <= right:
-            mid = (left + right) // 2
-            if mid == x // mid:
-                return mid
-            if x // mid < mid:
-                right = mid - 1
+        def function(base=x, exponent=abs(n)):
+            if exponent == 0:
+                return 1
+            elif exponent % 2 == 0:
+                return function(base * base, exponent // 2)
             else:
-                left = mid + 1
+                return base * function(base * base, (exponent - 1) // 2)
 
-        return right
+        f = function()
 
+        return float(f) if n >= 0 else 1 / f
 
-n = 25
+x = 2.00000
+n = 10
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.mySqrt(n))
+    print(task.myPow(x, n))

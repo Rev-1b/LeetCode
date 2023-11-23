@@ -1,16 +1,23 @@
 class Solution:
-    def trailingZeroes(self, n: int) -> int:
-        result = 0
-        n //= 5
+    def mySqrt(self, x: int) -> int:
+        if x == 0:
+            return 0
+        left, right = 1, x
 
-        while n:
-            result += n
-            n //= 5
+        while left <= right:
+            mid = (left + right) // 2
+            if mid == x // mid:
+                return mid
+            if x // mid < mid:
+                right = mid - 1
+            else:
+                left = mid + 1
 
-        return result
+        return right
 
 
-n = 120
+n = 25
+
 if __name__ == '__main__':
     task = Solution()
-    print(task.trailingZeroes(n))
+    print(task.mySqrt(n))

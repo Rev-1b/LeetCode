@@ -1,11 +1,17 @@
 class Solution:
-    def climbStairs(self, n: int) -> int:
-        pre, cur = 0,1
-        for i in range(n):
-            pre, cur = cur, pre+cur
-        return cur
-n = 8
+    def rob(self, nums: list[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+
+        cache: list[int] = [nums[0], max(nums[0], nums[1])]
+
+        for i in range(2, len(nums)):
+            cache.append(max(cache[i - 1], cache[i - 2] + nums[i]))
+        return cache[-1]
+
+
+nums = [2, 7, 9, 3, 1]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.climbStairs(n))
+    print(task.rob(nums))

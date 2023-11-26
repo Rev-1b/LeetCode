@@ -1,17 +1,30 @@
 class Solution:
-    def rob(self, nums: list[int]) -> int:
-        if len(nums) == 1:
-            return nums[0]
+    def wordBreak(self, s: str, wordDict: list[str]) -> bool:
+        bad_words = set()
 
-        cache: list[int] = [nums[0], max(nums[0], nums[1])]
+        def do_magic(string: str) -> bool:
+            res = False
+            if string in bad_words:
+                return res
 
-        for i in range(2, len(nums)):
-            cache.append(max(cache[i - 1], cache[i - 2] + nums[i]))
-        return cache[-1]
+            if not string:
+                return True
+
+            for word in wordDict:
+                if res:
+                    return res
+                if string.startswith(word):
+                    res = do_magic(string[len(word):])
+
+            bad_words.add(string)
+            return res
+
+        return do_magic(s)
 
 
-nums = [2, 7, 9, 3, 1]
+s = "catsandog"
+wordDict = ["cats", "dog", "sand", "and", "cat"]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.rob(nums))
+    print(task.wordBreak(s, wordDict))

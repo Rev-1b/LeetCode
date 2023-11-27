@@ -1,30 +1,18 @@
 class Solution:
-    def wordBreak(self, s: str, wordDict: list[str]) -> bool:
-        bad_words = set()
+    def coinChange(self, coins: list[int], amount: int) -> int:
+        cache = [amount + 1] * (amount + 1)
+        cache[0] = 0
 
-        def do_magic(string: str) -> bool:
-            res = False
-            if string in bad_words:
-                return res
-
-            if not string:
-                return True
-
-            for word in wordDict:
-                if res:
-                    return res
-                if string.startswith(word):
-                    res = do_magic(string[len(word):])
-
-            bad_words.add(string)
-            return res
-
-        return do_magic(s)
+        for i in range(amount + 1):
+            for coin in coins:
+                if coin <= i:
+                    cache[i] = min(cache[i], cache[i - coin] + 1)
+        return -1 if cache[amount] == amount + 1 else cache[amount]
 
 
-s = "catsandog"
-wordDict = ["cats", "dog", "sand", "and", "cat"]
+coins = [1, 2, 5]
+amount = 11
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.wordBreak(s, wordDict))
+    print(task.coinChange(coins, amount))

@@ -1,5 +1,5 @@
 class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
+    def lengthOfLIS(self, nums: list[int]) -> int:
         total_number = len(nums)
         dp = [0 for _ in range(total_number)]
         for i in range(1, total_number):

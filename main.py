@@ -1,30 +1,35 @@
 class Solution:
-    def minimumTotal(self, triangle: list[list[int]]) -> int:
-        i = 1
+    def minPathSum(self, grid: list[list[int]]) -> int:
 
-        while i < len(triangle):
-            row = triangle[i]
-            j = 0
+        start_i, start_j = 1, 0
+        n, m = len(grid), len(grid[0])
 
-            while j < len(row):
-                if j == 0:
-                    triangle[i][j] = triangle[i - 1][0] + triangle[i][j]
+        if n == 1:
+            return sum(grid[0])
 
-                elif j == len(row) - 1:
-                    triangle[i][j] = triangle[i - 1][len(row) - 2] + triangle[i][j]
+        while True:
+            i, j = start_i, start_j
 
-                else:
-                    triangle[i][j] = min(triangle[i - 1][j] + triangle[i][j],
-                                         triangle[i - 1][j - 1] + triangle[i][j])
+            while j < m and i >= 0:
+                left = grid[i][j - 1] if j > 0 else 1000
+                top = grid[i - 1][j] if i > 0 else 1000
 
+                grid[i][j] += min(left, top)
+
+                if i == n - 1 and j == m - 1:
+                    return grid[i][j]
+
+                i -= 1
                 j += 1
-            i += 1
 
-        return min(triangle[-1])
+            if start_i < n - 1:
+                start_i += 1
+            else:
+                start_j += 1
 
 
-triangle = [[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]
+grid = [[0]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.minimumTotal(triangle))
+    print(task.minPathSum(grid))

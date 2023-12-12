@@ -1,30 +1,30 @@
 class Solution:
-    def minDistance(self, word1: str, word2: str) -> int:
-        n, m = len(word1), len(word2)
-        cache = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+    def maximalSquare(self, matrix: list[list[str]]) -> int:
+        n, m = len(matrix), len(matrix[0])
 
-        for j in range(1, m + 1):
-            cache[0][j] = j
+        if all(i == '0' for row in matrix for i in row):
+            return 0
 
-        for i in range(1, n + 1):
-            cache[i][0] = i
+        result = 1
 
-        for i in range(1, n + 1):
-            for j in range(1, m + 1):
-                if word1[i - 1] == word2[j - 1]:
-                    cache[i][j] = cache[i - 1][j - 1]
+        for i in range(1, n):
+            for j in range(1, m):
+                if matrix[i][j] == '1':
+                    a, b, c = map(int, (matrix[i - 1][j], matrix[i - 1][j - 1], matrix[i][j - 1]))
+                    if a and b and c:
+                        res = min(a, b, c) + 1
+                        matrix[i][j] = str(res)
+                        result = max(res, result)
 
-                else:
-                    cache[i][j] = 1 + min(cache[i - 1][j - 1],
-                                          cache[i][j - 1],
-                                          cache[i - 1][j])
-
-        return cache[n][m]
+        return result ** 2
 
 
-word1 = "рупор"
-word2 = "р"
+matrix = [["1", "1", "1", "1", "0"],
+          ["1", "1", "1", "1", "0"],
+          ["1", "1", "1", "1", "1"],
+          ["1", "1", "1", "1", "1"],
+          ["0", "0", "1", "1", "1"]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.minDistance(word1, word2))
+    print(task.maximalSquare(matrix))

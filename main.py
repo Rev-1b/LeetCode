@@ -1,14 +1,9 @@
 class Solution:
-    def removeDuplicates(self, nums: list[int]) -> int:
-        left = 0
-
-        for i in range(2, len(nums)):
-            if nums[i] != nums[left]:
-                nums[left + 2] = nums[i]
-                left += 1
-        return left + 2
+    def majorityElement(self, nums: list[int]) -> int:
+        nums.sort()
+        return nums[len(nums) // 2]
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.removeDuplicates(nums=[0, 0, 1, 1, 1, 1, 2, 3, 3]))
+    print(task.majorityElement(nums=[2, 2, 1, 1, 1, 2, 2]))

@@ -1,14 +1,14 @@
 class Solution:
-    def removeElement(self, nums: list[int], val: int) -> int:
-        left = 0
-        for i in range(len(nums)):
-            if nums[i] != val:
-                nums[left] = nums[i]
-                left += 1
+    def removeDuplicates(self, nums: list[int]) -> int:
+        prev = 0
 
-        return left
+        for i in range(1, len(nums)):
+            if nums[i] != nums[prev]:
+                nums[prev + 1] = nums[i]
+                prev += 1
+        return prev + 1
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))
+    print(task.removeDuplicates(nums=[0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))

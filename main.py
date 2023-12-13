@@ -1,14 +1,14 @@
 class Solution:
     def removeDuplicates(self, nums: list[int]) -> int:
-        prev = 0
+        left = 0
 
-        for i in range(1, len(nums)):
-            if nums[i] != nums[prev]:
-                nums[prev + 1] = nums[i]
-                prev += 1
-        return prev + 1
+        for i in range(2, len(nums)):
+            if nums[i] != nums[left]:
+                nums[left + 2] = nums[i]
+                left += 1
+        return left + 2
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.removeDuplicates(nums=[0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))
+    print(task.removeDuplicates(nums=[0, 0, 1, 1, 1, 1, 2, 3, 3]))

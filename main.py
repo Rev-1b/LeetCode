@@ -1,20 +1,12 @@
 class Solution:
-    def jump(self, nums: list[int]) -> int:
-        end, res, curr = 0, 0, 0
-
-        for i in range(len(nums) - 1):
-            curr = max(curr, i + nums[i])
-            if curr >= len(nums) - 1:
-                res += 1
-                return res
-
-            if i == end:
-                res += 1
-                end = curr
-
-        return res
+    def hIndex(self, citations: list[int]) -> int:
+        citations.sort(reverse=True)
+        for index, num in enumerate(citations, 1):
+            if index > num:
+                return index - 1
+        return len(citations)
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.jump(nums=[2, 3, 1, 1, 4]))
+    print(task.hIndex([1,3,1]))

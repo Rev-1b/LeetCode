@@ -1,26 +1,20 @@
 class Solution:
-    def convert(self, s: str, numb: int) -> str:
-        if numb == 1:
-            return s
+    def strStr(self, haystack: str, needle: str) -> int:
+        if needle == haystack:
+            return needle
 
-        storage = ['' for _ in range(numb)]
+        i, j = 0, len(needle)
 
-        pointer = 0
-        mult = 1
-        for char in s:
-            storage[pointer] += char
+        while j <= len(haystack):
+            if haystack[i:j] == needle:
+                return i
 
-            if pointer == numb - 1:
-                mult = -1
+            i += 1
+            j += 1
 
-            if pointer == 0:
-                mult = 1
-
-            pointer += mult
-
-        return ''.join(storage)
+        return -1
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.convert(s="PAYPALISHIRING", numb=3))
+    print(task.strStr(haystack="sadbutsad", needle="sd"))

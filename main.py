@@ -1,18 +1,14 @@
 class Solution:
-    def strStr(self, haystack: str, needle: str) -> int:
-        if needle == haystack:
-            return needle
-
-        i, j = 0, len(needle)
-
-        while j <= len(haystack):
-            if haystack[i:j] == needle:
-                return i
-
-            i += 1
-            j += 1
-
-        return -1
+    def twoSum(self, numbers: list[int], target: int) -> list[int]:
+        i, j = 0, len(numbers) - 1
+        while i < j:
+            temp_sum = numbers[i] + numbers[j]
+            if temp_sum == target:
+                return [i + 1, j + 1]
+            if temp_sum > target:
+                j -= 1
+            else:
+                i += 1
 
 
 if __name__ == '__main__':

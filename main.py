@@ -1,16 +1,18 @@
 class Solution:
-    def twoSum(self, numbers: list[int], target: int) -> list[int]:
-        i, j = 0, len(numbers) - 1
+    def maxArea(self, height: list[int]) -> int:
+        i, j = 0, len(height) - 1
+        result = min(height[i], height[j]) * (j - i)
+
         while i < j:
-            temp_sum = numbers[i] + numbers[j]
-            if temp_sum == target:
-                return [i + 1, j + 1]
-            if temp_sum > target:
-                j -= 1
-            else:
+            if height[i] < height[j]:
                 i += 1
+            else:
+                j -= 1
+            result = max(min(height[i], height[j]) * (j - i), result)
+
+        return result
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.strStr(haystack="sadbutsad", needle="sd"))
+    print(task.maxArea(height=[1, 2, 4, 3]))

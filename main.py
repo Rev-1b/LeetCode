@@ -1,19 +1,22 @@
 class Solution:
-    def minSubArrayLen(self, target: int, nums: list[int]) -> int:
-        result = float('inf')
-        curr_sum, index = 0, 0
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not len(s):
+            return 0
 
-        for i in range(len(nums)):
-            curr_sum += nums[i]
-            while curr_sum >= target:
-                curr_sum -= nums[index]
-                result = min(result, i + 1 - index)
+        storage = set(s[0])
+        index = 0
+        result = 1
+
+        for i in range(1, len(s)):
+            while s[i] in storage:
+                storage.remove(s[index])
                 index += 1
+            storage.add(s[i])
+            result = max(result, i + 1 - index)
 
-        return result if result != float('-inf') else 0
-
+        return result
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.minSubArrayLen(target=7, nums=[2, 3, 1, 2, 4, 3]))
+    print(task.lengthOfLongestSubstring(s="abcabcbb"))

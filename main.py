@@ -1,19 +1,27 @@
 class Solution:
-    def rotate(self, matrix: list[list[int]]) -> None:
-        matrix.reverse()
+    def setZeroes(self, matrix: list[list[int]]) -> None:
+        rows, cols = set(), set()
 
-        for i in range(1, len(matrix)):
-            for j in range(i):
-                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 0:
+                    rows.add(i)
+                    cols.add(j)
+
+        for row in rows:
+            matrix[row] = [0] * len(matrix[0])
+
+        for col in cols:
+            for i in range(len(matrix)):
+                matrix[i][col] = 0
 
 
-
-matrix = [[1, 2, 3],
-          [4, 5, 6],
-          [7, 8, 9]]
+matrix = [[1, 1, 1],
+          [1, 0, 1],
+          [1, 1, 1]]
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.rotate(matrix=matrix))
+    print(task.setZeroes(matrix=matrix))
     for row in matrix:
         print(*row)

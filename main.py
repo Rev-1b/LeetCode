@@ -1,16 +1,25 @@
 class Solution:
-    def isIsomorphic(self, s: str, t: str) -> bool:
-        if len(s) != len(t):
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        words = s.split()
+
+        if len(words) != len(pattern):
             return False
-        s_main, t_main = {}, {}
-        for s_char, t_char in zip(s, t):
-            s_temp = s_main.setdefault(s_char, t_char)
-            t_temp = t_main.setdefault(t_char, s_char)
-            if s_temp != t_char or t_temp != s_char:
-                return False
+
+        pattern_dict, visited = {}, set()
+        for char, word in zip(pattern, words):
+            if char not in pattern_dict:
+                if word in visited:
+                    return False
+                else:
+                    pattern_dict[char] = word
+                    visited.add(word)
+            else:
+                if pattern_dict[char] != word:
+                    return False
+
         return True
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isIsomorphic(s="bads", t="baba"))
+    print(task.wordPattern(pattern="abba", s="dog cat cat dog"))

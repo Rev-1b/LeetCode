@@ -1,25 +1,19 @@
 class Solution:
-    def summaryRanges(self, nums: list[int]) -> list[str]:
-        result = []
-        i = 0
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
+        intervals.sort()
+        result = [intervals[0]]
+        i = 1
 
-        while i < len(nums):
-            left = right = i
-            while right + 1 < len(nums) and nums[right] + 1 == nums[right + 1]:
-                right += 1
-            if left == right:
-                result.append(f'{nums[left]}')
-            else:
-                result.append(f'{nums[left]}->{nums[right]}')
-            i = right + 1
+        while i < len(intervals):
+            if result[-1][1] <= intervals[i][1]:
+                if intervals[i][0] <= result[-1][1]:
+                    result[-1][1] = intervals[i][1]
+                else:
+                    result.append(intervals[i])
+            i += 1
 
         return result
 
-
-
 if __name__ == '__main__':
     task = Solution()
-    print(task.summaryRanges(nums=[0, 1, 2, 4, 5, 7]))
-
-    nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
-    print(sorted(nums))
+    print(task.merge(intervals=[[1, 4], [2, 3]]))

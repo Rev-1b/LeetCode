@@ -3,6 +3,7 @@ class Solution:
         result = []
         START, END = 0, 1
 
+
         for elem in intervals:
             if elem[END] < newInterval[START]:
                 result.append(elem)

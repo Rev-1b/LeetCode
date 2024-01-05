@@ -8,31 +8,34 @@ class ListNode:
 
 
 class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    def mergeTwoLists(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+
         head = None
         tail = None
-        prev_val = 0
 
-        while l1 or l2:
-            val1 = l1.val if l1 else 0
-            val2 = l2.val if l2 else 0
-            temp_sum = val1 + val2 + prev_val
-            new_node_val = temp_sum % 10
-            prev_val = temp_sum // 10
+        while l1 and l2:
+            if l1.val <= l2.val:
+                node = ListNode(l1.val)
+                l1 = l1.next if l1 else None
+            else:
+                node = ListNode(l2.val)
+                l2 = l2.next if l2 else None
 
-            new_node = ListNode(new_node_val)
             if not head:
-                head = new_node
+                head = node
                 tail = head
             else:
-                tail.next = new_node
-                tail = new_node
+                tail.next = node
+                tail = node
 
-            l1 = l1.next if l1 else None
-            l2 = l2.next if l2 else None
-
-        if prev_val:
-            tail.next = ListNode(prev_val)
+        if l1:
+            tail.next = l1
+        if l2:
+            tail.next = l2
 
         return head
 
@@ -40,17 +43,15 @@ class Solution:
 if __name__ == '__main__':
     task = Solution()
 
-    node1 = ListNode(1)
-    node2 = ListNode(2, node1)
-    node3 = ListNode(3, node2)
-    node4 = ListNode(4, node3)
-    node5 = ListNode(5, node4)
-    node6 = ListNode(6, node5)
-    node7 = ListNode(7, node6)
-    node8 = ListNode(8, node7)
-    node9 = ListNode(9, node8)
-    node10 = ListNode(10, node9)
+    node8 = ListNode(9)
+    node7 = ListNode(8, node8)
+    node5 = ListNode(7, node7)
+    node3 = ListNode(6, node5)
+    node1 = ListNode(5, node3)
 
-    node4.next = node9
+    node9 = ListNode(4)
+    node6 = ListNode(3, node9)
+    node4 = ListNode(2, node6)
+    node2 = ListNode(1, node4)
 
-    print(task.addTwoNumbers(node10))
+    print(task.mergeTwoLists(node1, node2))

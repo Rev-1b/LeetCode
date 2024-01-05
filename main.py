@@ -1,24 +1,43 @@
-class Solution:
-    def evalRPN(self, tokens: list[str]) -> int:
-        stack = []
-        operators = {
-            '+': lambda x, y: x + y,
-            '-': lambda x, y: x - y,
-            '/': lambda x, y: int(x / y),
-            '*': lambda x, y: x * y,
-        }
+from typing import Optional
 
-        for elem in tokens:
-            if elem in operators:
-                y = stack.pop()
-                x = stack.pop()
-                func = operators[elem]
-                stack.append(func(x, y))
-            else:
-                stack.append(int(elem))
-        return stack[0]
+
+class ListNode:
+    def __init__(self, x, next=None):
+        self.val = x
+        self.next = next
+
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return False
+
+        slow, fast = head, head.next
+
+        while fast and fast.next:
+            if slow == fast:
+                return True
+
+            slow = slow.next
+            fast = fast.next.next
+
+        return False
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.evalRPN(["4", "13", "5", "/", "+"]))
+
+    node1 = ListNode(1)
+    node2 = ListNode(2, node1)
+    node3 = ListNode(3, node2)
+    node4 = ListNode(4, node3)
+    node5 = ListNode(5, node4)
+    node6 = ListNode(6, node5)
+    node7 = ListNode(7, node6)
+    node8 = ListNode(8, node7)
+    node9 = ListNode(9, node8)
+    node10 = ListNode(10, node9)
+
+    node4.next = node9
+
+    print(task.hasCycle(node10))

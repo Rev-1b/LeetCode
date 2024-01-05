@@ -1,29 +1,24 @@
 class Solution:
-    def simplifyPath(self, path: str) -> str:
+    def evalRPN(self, tokens: list[str]) -> int:
         stack = []
-        temp = ''
-        result = []
+        operators = {
+            '+': lambda x, y: x + y,
+            '-': lambda x, y: x - y,
+            '/': lambda x, y: int(x / y),
+            '*': lambda x, y: x * y,
+        }
 
-        for char in path:
-            if char == '/':
-                if temp:
-                    stack.append(temp)
-                    temp = ''
+        for elem in tokens:
+            if elem in operators:
+                y = stack.pop()
+                x = stack.pop()
+                func = operators[elem]
+                stack.append(func(x, y))
             else:
-                temp += char
-        if temp:
-            stack.append(temp)
-
-        for elem in stack:
-            if elem == '..':
-                if result:
-                    result = result[:-1]
-            elif elem != '.':
-                result.append(elem)
-
-        return '/' + '/'.join(result)
+                stack.append(int(elem))
+        return stack[0]
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.simplifyPath(path="/home//foo/"))
+    print(task.evalRPN(["4", "13", "5", "/", "+"]))

@@ -1,20 +1,29 @@
 class Solution:
-    def isValid(self, s: str) -> bool:
-        closed = {')': '(', ']': '[', '}': '{'}
-        stack = ''
+    def simplifyPath(self, path: str) -> str:
+        stack = []
+        temp = ''
+        result = []
 
-        for char in s:
-            if char in closed:
-                if stack and closed[char] == stack[-1]:
-                    stack = stack[:-1]
-                else:
-                    return False
+        for char in path:
+            if char == '/':
+                if temp:
+                    stack.append(temp)
+                    temp = ''
             else:
-                stack += char
+                temp += char
+        if temp:
+            stack.append(temp)
 
-        return stack == ''
+        for elem in stack:
+            if elem == '..':
+                if result:
+                    result = result[:-1]
+            elif elem != '.':
+                result.append(elem)
+
+        return '/' + '/'.join(result)
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.isValid(s="(({}[][{()}[]]))"))
+    print(task.simplifyPath(path="/home//foo/"))

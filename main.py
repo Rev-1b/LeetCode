@@ -1,17 +1,20 @@
 class Solution:
-    def findMinArrowShots(self, points: list[list[int]]) -> int:
-        points.sort(key=lambda x: x[1])
-        arrows = 1
-        shot = points[0][1]
+    def isValid(self, s: str) -> bool:
+        closed = {')': '(', ']': '[', '}': '{'}
+        stack = ''
 
-        for balloon in points[1:]:
-            if shot < balloon[0]:
-                arrows += 1
-                shot = balloon[1]
+        for char in s:
+            if char in closed:
+                if stack and closed[char] == stack[-1]:
+                    stack = stack[:-1]
+                else:
+                    return False
+            else:
+                stack += char
 
-        return arrows
+        return stack == ''
 
 
 if __name__ == '__main__':
     task = Solution()
-    print(task.findMinArrowShots(points=[[10, 16], [2, 8], [1, 6], [7, 12]]))
+    print(task.isValid(s="(({}[][{()}[]]))"))

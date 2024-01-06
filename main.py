@@ -8,34 +8,20 @@ class ListNode:
 
 
 class Solution:
-    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        if left == right:
-            return head
-
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        storage = {}
+        i = 1
         curr = head
-        tail = None
-        while left > 1:
-            tail = curr
+        while curr:
+            storage[i] = curr
             curr = curr.next
-            left -= 1
-            right -= 1
-
-        first_to_last = curr
-        prev = None
-        while right > 0:
-            next_node = curr.next
-            if prev:
-                curr.next = prev
-            prev = curr
-            curr = next_node
-            right -= 1
-
-        if tail:
-            tail.next = prev
-        else:
-            head = prev
-        first_to_last.next = curr
+            i += 1
+        index = i - n
+        if index == 1:
+            return storage.get(2)
+        storage[index - 1].next = storage.get(index + 1)
         return head
+
 
 if __name__ == '__main__':
     task = Solution()

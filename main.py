@@ -8,19 +8,28 @@ class ListNode:
 
 
 class Solution:
-    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
+
+        curr = head
         storage = {}
         i = 1
-        curr = head
+
         while curr:
             storage[i] = curr
             curr = curr.next
             i += 1
-        index = i - n
-        if index == 1:
-            return storage.get(2)
-        storage[index - 1].next = storage.get(index + 1)
-        return head
+
+        list_len = i - 1
+        k = k % list_len
+        if not k:
+            return head
+
+        storage[list_len - k].next = None
+        storage[list_len].next = head
+        return storage[list_len - k + 1]
+
 
 
 if __name__ == '__main__':

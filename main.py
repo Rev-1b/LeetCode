@@ -8,27 +8,25 @@ class ListNode:
 
 
 class Solution:
-    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return head
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        before, after = ListNode(0), ListNode(0)
+        before_curr, after_curr = before, after
 
-        curr, i = head, 1
-        storage = {}
+        while head:
+            if head.val < x:
+                before_curr.next = head
+                before_curr = head
 
-        while curr:
-            storage[i] = curr
-            curr = curr.next
-            i += 1
+            else:
+                after_curr.next = head
+                after_curr = head
 
-        length = i - 1
-        k = k % length
+            head = head.next
 
-        if not k:
-            return head
+        after_curr.next = None
+        before_curr.next = after.next
 
-        storage.get(length - k).next = None
-        storage.get(length).next = head
-        return storage[length - k + 1]
+        return before.next
 
 
 if __name__ == '__main__':

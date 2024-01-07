@@ -8,42 +8,32 @@ class ListNode:
 
 
 class Solution:
-    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return head
-
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        temp_node = ListNode(x=-1)
+        temp_node.next = head
         curr = head
-        storage = {}
-        i = 1
 
-        while curr:
-            storage[i] = curr
-            curr = curr.next
-            i += 1
+        while curr.next:
+            if curr.val == curr.next.val:
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
 
-        list_len = i - 1
-        k = k % list_len
-        if not k:
-            return head
-
-        storage[list_len - k].next = None
-        storage[list_len].next = head
-        return storage[list_len - k + 1]
-
+        return temp_node.next
 
 
 if __name__ == '__main__':
     task = Solution()
 
-    # node8 = ListNode(9)
-    # node7 = ListNode(8, node8)
-    # node5 = ListNode(7, node7)
-    # node3 = ListNode(6, node5)
-    # node1 = ListNode(5, node3)
-    #
-    # node9 = ListNode(4)
-    # node6 = ListNode(3, node9)
-    # node4 = ListNode(2, node6)
-    # node2 = ListNode(1, node4)
+    node8 = ListNode(9)
+    node7 = ListNode(8, node8)
+    node5 = ListNode(8, node7)
+    node3 = ListNode(5, node5)
+    node1 = ListNode(5, node3)
 
-    print(task.copyRandomList())
+    node9 = ListNode(2, node1)
+    node6 = ListNode(2, node9)
+    node4 = ListNode(2, node6)
+    node2 = ListNode(2, node4)
+
+    print(task.deleteDuplicates(node2))

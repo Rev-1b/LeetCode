@@ -8,18 +8,27 @@ class ListNode:
 
 
 class Solution:
-    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        temp_node = ListNode(x=-1)
-        temp_node.next = head
-        curr = head
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
 
-        while curr.next:
-            if curr.val == curr.next.val:
-                curr.next = curr.next.next
-            else:
-                curr = curr.next
+        curr, i = head, 1
+        storage = {}
 
-        return temp_node.next
+        while curr:
+            storage[i] = curr
+            curr = curr.next
+            i += 1
+
+        length = i - 1
+        k = k % length
+
+        if not k:
+            return head
+
+        storage.get(length - k).next = None
+        storage.get(length).next = head
+        return storage[length - k + 1]
 
 
 if __name__ == '__main__':
